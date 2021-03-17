@@ -17,8 +17,8 @@ public class LogReader extends Thread {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         try {
             if(!input.ready()){
-                System.out.println("¬ведите название файла (‘айл должен быть в том же каталоге," +
-                        " что и .jar:");
+                System.out.println("Enter the name of the file (The file must be in the same directory," +
+                        " as jar file):");
                 Scanner in = new Scanner(System.in);
                 String fileName = in.next();
                 File logFile = new File(fileName);
