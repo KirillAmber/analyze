@@ -9,7 +9,7 @@ public class InputQueueSingleton {
 
     private static volatile InputQueueSingleton instance;
 
-    public Queue<String> inputQueue;
+    private final ConcurrentLinkedQueue inputQueue;
 
     private InputQueueSingleton() {
         inputQueue = new ConcurrentLinkedQueue();

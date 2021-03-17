@@ -1,4 +1,4 @@
-package ru.farpost.analyze.logHandlers;
+package ru.farpost.analyze.utils;
 
 
 import ru.farpost.analyze.models.Interval;
@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 //Этот класс проверяет интервал на наличие ошибок и на долю доступности
-public class GroupCheckerAvailability {
+public class GroupAnalyzerAvailability {
     private final String ERROR_SERVER_0 = "500";
     private final String ERROR_SERVER_99 = "599";
     //паттерн для выявления кода ответа сервера
@@ -23,14 +23,14 @@ public class GroupCheckerAvailability {
     private int totalRequests;
     private int amountFailure;
 
-    public GroupCheckerAvailability(double minPercAvailability,
-                                    double millisAcceptable){
+    public GroupAnalyzerAvailability(double minPercAvailability,
+                                     double millisAcceptable){
         this.minPercAvailability = minPercAvailability;
         this.millisAcceptable = millisAcceptable;
     }
 
     //проверяет долю доступности в этом интервале и возвращает объект Interval с выявленной долей
-    public Interval check(String dataS, String dataF, Queue<String> groupData){
+    public Interval analyze(String dataS, String dataF, Queue<String> groupData){
         //analyze
         Interval failureInterval = new Interval(dataS, dataF);
         totalRequests = groupData.size();

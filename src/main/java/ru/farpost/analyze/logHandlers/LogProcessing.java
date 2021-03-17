@@ -1,5 +1,6 @@
 package ru.farpost.analyze.logHandlers;
 
+import ru.farpost.analyze.utils.GroupAnalyzerAvailability;
 import ru.farpost.analyze.models.Interval;
 import ru.farpost.analyze.models.InputQueueSingleton;
 import ru.farpost.analyze.models.OutputQueueSingleton;
@@ -10,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class LogProcessing extends Thread {
     private Queue<String> groupData;
-    private GroupCheckerAvailability groupCheckerAvailability;
+    private GroupAnalyzerAvailability groupAnalyzerAvailability;
     private boolean isReading;
     //Данный класс обрабатывает строки из файла
     public LogProcessing(double minPercAvailability, double millisAcceptable){
@@ -18,7 +19,7 @@ public class LogProcessing extends Thread {
         this.groupData = new ArrayDeque<>();
         //isReading - булевая переменная, которая будет всегда true, пока bufferedReader не прочитает весь файл
         this.isReading = true;
-        groupCheckerAvailability = new GroupCheckerAvailability(minPercAvailability, millisAcceptable);
+        groupAnalyzerAvailability = new GroupAnalyzerAvailability(minPercAvailability, millisAcceptable);
     }
 
     private boolean addFailureInterval(Interval interval){
@@ -57,7 +58,7 @@ public class LogProcessing extends Thread {
                     else if(!tempData.equals(datatimeMatcher.group())){
                         groupData.add(InputQueueSingleton.getInstance().getInputQueue().poll());
                         //проверяет заданный интервал и если он проблемный, то добавляет в очередь для вывода
-                        addFailureInterval(groupCheckerAvailability.check(tempData, datatimeMatcher.group(), groupData));
+                        addFailureInterval(groupAnalyzerAvailability.analyze(tempData, datatimeMatcher.group(), groupData));
                         tempData = datatimeMatcher.group();
                     }
                 }
@@ -65,7 +66,7 @@ public class LogProcessing extends Thread {
         }
         //если вдруг в логах только одна дата
         if(!groupData.isEmpty()){
-            addFailureInterval(groupCheckerAvailability.check(tempData, tempData, groupData));
+            addFailureInterval(groupAnalyzerAvailability.analyze(tempData, tempData, groupData));
         }
     }
 

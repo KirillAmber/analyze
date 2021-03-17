@@ -6,31 +6,16 @@ import java.io.*;
 import java.util.Scanner;
 
 public class LogReader extends Thread {
+    private BufferedReader input;
 
-    public LogReader(){
-
+    public LogReader(BufferedReader input){
+        this.input = input;
     }
 
     @Override
     public void run() {
         super.run();
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            if(!input.ready()){
-                System.out.println("Enter the name of the file (The file must be in the same directory," +
-                        " as jar file):");
-                Scanner in = new Scanner(System.in);
-                String fileName = in.next();
-                File logFile = new File(fileName);
-                System.out.println(logFile.getAbsolutePath());
-
-                input = new BufferedReader(new FileReader(logFile));
-            }
-            read(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        read(input);
     }
 
     private void read(BufferedReader input) {
@@ -41,7 +26,7 @@ public class LogReader extends Thread {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            InputQueueSingleton.getInstance().inputQueue.add(stringLog);
+            InputQueueSingleton.getInstance().getInputQueue().add(stringLog);
         }
     }
 }
