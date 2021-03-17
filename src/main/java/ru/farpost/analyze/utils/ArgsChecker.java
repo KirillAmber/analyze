@@ -1,5 +1,7 @@
 package ru.farpost.analyze.utils;
 
+import ru.farpost.analyze.exceptions.argumentsExceptions.*;
+
 import java.util.Scanner;
 /*Класс, который предназначен для проверки аргументов ввода
     Правила и возможности ввода:
@@ -25,7 +27,7 @@ public class ArgsChecker {
         filename = "";
     }
     //проверка аргументов
-    public boolean check(String [] args) {
+    public boolean check(String [] args) throws ArgumentException {
         if (args.length == 0) { // ввод с помощью интерактивного ввода
             Scanner in = new Scanner(System.in);
             System.out.println("Enter the name of the file (The file must be in the same directory," +
@@ -40,20 +42,15 @@ public class ArgsChecker {
             checkMillisAcceptable(args);
             checkFilename(args);
         } else if (args.length != 4) {
-            System.err.println("You should provide 2 arguments: " +
-                    "-u <double> (minimum acceptable level (percentage) of availability) " +
-                    "-t <double> (acceptable response time (milliseconds))");
-            System.exit(-1);
+            throw new NoEnoughArgsException();
         } else {
             checkMinPercAvailability(args);
             checkMillisAcceptable(args);
-
         }
         return true;
     }
 
-    private boolean checkMinPercAvailability(String [] args){
-        try {
+    private boolean checkMinPercAvailability(String [] args) throws WrongPercException {
             if (args[0].equals("-u")) {
                 minPercAvailability = Double.parseDouble(args[1]);
             } else if (args[2].equals("-u")) {
@@ -61,35 +58,24 @@ public class ArgsChecker {
             } else if (args[4].equals("-u")){
                 minPercAvailability = Double.parseDouble(args[5]);
             } else {
-                System.out.println("You did not specify a parameter -u <double> (minimum acceptable level (percentage) of availability) ");
-                System.exit(-1);
+                //System.out.println("You did not specify a parameter -u <double> (minimum acceptable level (percentage) of availability) ");
+                throw new WrongPercException();
             }
-        } catch (NumberFormatException | NullPointerException e) {
-            System.out.println("ERROR! You entered either a blank or an incorrect percentage");
-            System.exit(-1);
+        return true;
+    }
+    private boolean checkMillisAcceptable(String [] args) throws NullPointerException, NumberFormatException, WrongMillisException {
+        if (args[0].equals("-t")) {
+            millisAcceptable = Double.parseDouble(args[1]);
+        } else if (args[2].equals("-t")) {
+            millisAcceptable = Double.parseDouble(args[3]);
+        } else if (args[4].equals("-t")) {
+            millisAcceptable = Double.parseDouble(args[5]);
+        } else {
+            throw new WrongMillisException();
         }
         return true;
     }
-    private boolean checkMillisAcceptable(String [] args){
-        try {
-            if (args[0].equals("-t")) {
-                millisAcceptable = Double.parseDouble(args[1]);
-            } else if (args[2].equals("-t")) {
-                millisAcceptable = Double.parseDouble(args[3]);
-            } else if(args[4].equals("-t")){
-                millisAcceptable = Double.parseDouble(args[5]);
-            }  else {
-            System.out.println("You did not specify a parameter -t <double> (acceptable response time (milliseconds)) ");
-            System.exit(-1);
-        }
-        } catch (NumberFormatException | NullPointerException e) {
-            System.out.println("ERROR! You entered either a blank or an incorrect millisAcceptable");
-            System.exit(-1);
-        }
-        return true;
-    }
-    private boolean checkFilename(String [] args){
-        try {
+    private boolean checkFilename(String [] args) throws WrongFileException {
             if (args[0].equals("-f")) {
                 filename = args[1];
             } else if (args[2].equals("-f")) {
@@ -97,13 +83,8 @@ public class ArgsChecker {
             } else if (args[4].equals("-f")){
                 filename = args[5];
             } else {
-                System.out.println("You did not specify a parameter -f <filename> (name of file)");
-                System.exit(-1);
+                throw new WrongFileException();
             }
-        } catch (NumberFormatException | NullPointerException e) {
-            System.out.println("ERROR! You incorrect filename");
-            System.exit(-1);
-        }
         return true;
     }
         public double getMinPercAvailability () {

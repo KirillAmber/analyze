@@ -1,38 +1,65 @@
 package ru.farpost.analyze;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import ru.farpost.analyze.logHandlers.LogReader;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import ru.farpost.analyze.exceptions.NoInputException;
+import ru.farpost.analyze.exceptions.argumentsExceptions.ArgumentException;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Method;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+@RunWith(Parameterized.class)
+public class MainTest {
 
-class MainTest {
     Runtime runtime;
     long usedMemoryBefore;
     long usedMemoryAfter;
     int coefficientMegabyte = 1000000;
-    String [] args = {"-", "99", "-t", "45", "-f", "access.log"};
+    String [] args;
 
-    @BeforeEach
-    void setUp() {
+    @Parameterized.Parameters
+    public static List<String[][]> collection(){
+        return Arrays.asList(
+                //0 адекватный тест
+                new String[][]{new String[]{"-u", "99", "-t", "45", "-f", "access.log"}},
+                //1 неправильное имя файла
+                new String[][]{new String[]{"-u", "99", "-t", "45", "-f", "access.logss"}},
+                //2,3,4 перемешанные аргументы
+                new String[][]{new String[]{"-t", "45", "-u", "99",  "-f", "access.log"}},
+                new String[][]{new String[]{"-f", "access.log", "-t", "45", "-u", "99"}},
+                new String[][]{new String[]{"-t", "45", "-u", "99",  "-f", "access.log"}},
+                //5 неправильно заданны названия аргументов
+                new String[][]{new String[]{"t", "45", "u", "99",  "-f", "access.log"}},
+                //6 пустые аргументы
+                new String[][]{new String[]{"-t", "", "-u", ""}},
+                //7 без файла
+                new String[][]{new String[]{"-t", "45", "-u", "99"}},
+                //8 с одним аргументом
+                new String[][]{new String[]{"-u", "99"}});
+    }
+    public MainTest(String [] args){
+        this.args = args;
+    }
+    @Before
+    public void setUp() throws Exception {
         runtime = Runtime.getRuntime();
         long usedMemoryBefore = (runtime.totalMemory() - runtime.freeMemory())/coefficientMegabyte;
         System.out.println("Used Memory before:" + usedMemoryBefore);
     }
 
-    @AfterEach
-    void tearDown() {
+    @After
+    public void tearDown() throws Exception {
         usedMemoryAfter = (runtime.totalMemory() - runtime.freeMemory())/coefficientMegabyte;
         System.out.println("Memory increased:" + (usedMemoryAfter-usedMemoryBefore));
     }
 
     @Test
-    void main() throws FileNotFoundException {
+    public void main() throws IOException, ArgumentException, NoInputException {
         Main.main(args);
     }
 }
