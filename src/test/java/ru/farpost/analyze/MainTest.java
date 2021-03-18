@@ -16,14 +16,10 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class MainTest {
 
-    Runtime runtime;
-    long usedMemoryBefore;
-    long usedMemoryAfter;
-    int coefficientMegabyte = 1000000;
     String [] args;
 
     @Parameterized.Parameters
-    public static List<String[][]> collection(){
+    public static List<String[][]> testParams(){
         return Arrays.asList(
                 //0 адекватный тест
                 new String[][]{new String[]{"-u", "99", "-t", "45", "-f", "access.log"}},
@@ -46,16 +42,11 @@ public class MainTest {
         this.args = args;
     }
     @Before
-    public void setUp() throws Exception {
-        runtime = Runtime.getRuntime();
-        long usedMemoryBefore = (runtime.totalMemory() - runtime.freeMemory())/coefficientMegabyte;
-        System.out.println("Used Memory before:" + usedMemoryBefore);
+    public void setUp(){
     }
 
     @After
-    public void tearDown() throws Exception {
-        usedMemoryAfter = (runtime.totalMemory() - runtime.freeMemory())/coefficientMegabyte;
-        System.out.println("Memory increased:" + (usedMemoryAfter-usedMemoryBefore));
+    public void tearDown(){
     }
 
     @Test

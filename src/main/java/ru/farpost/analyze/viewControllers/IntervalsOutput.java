@@ -16,12 +16,15 @@ public class IntervalsOutput extends Thread {
     @Override
     public void run() {
         super.run();
+        display();
+    }
+
+    private void display(){
         while(isProcessing || OutputQueueSingleton.getInstance().getOutputQueue().size() > 0){
             Interval interval;
             if(OutputQueueSingleton.getInstance().outputQueue.peek()!=null) {
-               // System.out.println(OutputQueueSingleton.getInstance().outputQueue.peek());
                 interval = OutputQueueSingleton.getInstance().outputQueue.poll();
-                System.out.println(interval.getDataS() + "\t" + interval.getDataF() + "\t" + interval.getPercAvailability());
+                System.out.format("%s \t %s \t %.2f\n", interval.getDataS(), interval.getDataF(), interval.getPercAvailability());
             }
         }
     }

@@ -8,12 +8,10 @@ import ru.farpost.analyze.utils.ArgsChecker;
 import ru.farpost.analyze.viewControllers.IntervalsOutput;
 
 import java.io.*;
-
 //Требуется написать алгоритм читающий access-лог и выполняющий анализ отказов автоматически.
 public class Main {
-    //Очередь предназначена для передачи данных через потоки.
-
     public static void main(String[] args) throws IOException, ArgumentException, NoInputException {
+        //сначала проверяем аргументы
         ArgsChecker argsChecker = new ArgsChecker();
         if (argsChecker.check(args)) {
             //открытие файла
@@ -26,7 +24,7 @@ public class Main {
             if(!input.ready()){
                 throw new NoInputException();
             }
-
+            //инициализация потоков
             LogReader logReader = new LogReader(input);
             LogProcessing logProcessing = new LogProcessing(argsChecker.getMinPercAvailability(), argsChecker.getMillisAcceptable());
             IntervalsOutput intervalsOutput = new IntervalsOutput();
@@ -36,13 +34,10 @@ public class Main {
             logProcessing.setPriority(6);
             intervalsOutput.start();
             intervalsOutput.setPriority(6);
-
-            while (logReader.isAlive()) {
-
-            }
+            //последовательное отключение потоков
+            while (logReader.isAlive()) { }
             logProcessing.setReading(false);
-            while (logProcessing.isAlive()) {
-            }
+            while (logProcessing.isAlive()) { }
             intervalsOutput.setProcessing(false);
         }
     }

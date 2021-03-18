@@ -1,7 +1,7 @@
 package ru.farpost.analyze.exceptions.argumentsExceptions;
-
+//Родитель всех исключений, связанных с аргументами
 public class ArgumentException extends Exception {
-    private static final String MESSAGE = "Wrong parameters";
+    private static final String MESSAGE = "Wrong arguments";
     public ArgumentException() {
         super(MESSAGE);
     }

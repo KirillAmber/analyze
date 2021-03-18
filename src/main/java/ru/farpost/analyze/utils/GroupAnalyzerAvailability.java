@@ -21,7 +21,11 @@ public class GroupAnalyzerAvailability {
     private Matcher timeResponseMatcher;
 
     private int totalRequests;
-    private int amountFailure;
+    private int amountFailures;
+
+    public GroupAnalyzerAvailability (){
+
+    }
 
     public GroupAnalyzerAvailability(double minPercAvailability,
                                      double millisAcceptable){
@@ -34,7 +38,7 @@ public class GroupAnalyzerAvailability {
         //analyze
         Interval failureInterval = new Interval(dataS, dataF);
         totalRequests = groupData.size();
-        amountFailure = 0;
+        amountFailures = 0;
         int compareToError0;
         int compareToError99;
         double percAvailabilityGroup;
@@ -47,17 +51,17 @@ public class GroupAnalyzerAvailability {
                     compareToError99 = codeMatcher.group().compareTo(ERROR_SERVER_99);
                     double millisResponse = Double.parseDouble(timeResponseMatcher.group());
                     if ((compareToError0 >= 0 && compareToError99 <= 0)) {
-                        amountFailure += 1;
+                        amountFailures += 1;
                     }
                     else if(millisResponse > millisAcceptable){
-                        amountFailure += 1;
+                        amountFailures += 1;
                     }
                 }
             }
             groupData.poll();
         }
         //вычисление доли доступности группы
-        percAvailabilityGroup = 100.0 - ((double)amountFailure/totalRequests * 100);
+        percAvailabilityGroup = computeAvailability(totalRequests, amountFailures);
         if(percAvailabilityGroup < minPercAvailability) {
             failureInterval.setPercAvailability(percAvailabilityGroup);
         }
@@ -65,4 +69,8 @@ public class GroupAnalyzerAvailability {
         return failureInterval;
     }
 
+    //вычисление процентного соотношения
+    private double computeAvailability(int totalRequests, int amountFailures){
+        return 100.0 - ((double)amountFailures/totalRequests * 100);
+    }
 }

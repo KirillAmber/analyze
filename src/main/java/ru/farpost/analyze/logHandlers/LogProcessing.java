@@ -10,9 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LogProcessing extends Thread {
-    private Queue<String> groupData;
-    private GroupAnalyzerAvailability groupAnalyzerAvailability;
+    private final Queue<String> groupData;
+    private final GroupAnalyzerAvailability groupAnalyzerAvailability;
     private boolean isReading;
+
     //Данный класс обрабатывает строки из файла
     public LogProcessing(double minPercAvailability, double millisAcceptable){
         //groupData - очередь, которая будет содержать строчки для проверки на успешность запроса
@@ -22,17 +23,14 @@ public class LogProcessing extends Thread {
         groupAnalyzerAvailability = new GroupAnalyzerAvailability(minPercAvailability, millisAcceptable);
     }
 
-    private boolean addFailureInterval(Interval interval){
-        if(interval.getPercAvailability() >= 0){
-            OutputQueueSingleton.getInstance().getOutputQueue().add(interval);
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void run() {
         super.run();
+        process();
+    }
+
+
+    private void process(){
         //паттерн для выявления время начала запроса
         Pattern datatimePattern = Pattern.compile("(\\d{2}[:]\\d{2}[:]\\d{2}(?:\\s))");
         Matcher datatimeMatcher;
@@ -54,7 +52,6 @@ public class LogProcessing extends Thread {
                         groupData.add(InputQueueSingleton.getInstance().getInputQueue().poll());
                     }
                     //здесь мы анализируем данные из groupData и выгружаем в map
-                    //НУЖНО СДЕЛАТЬ ПРОВЕРКИ НА ДОСТУПНОСТЬ И ВРЕМЯ
                     else if(!tempData.equals(datatimeMatcher.group())){
                         groupData.add(InputQueueSingleton.getInstance().getInputQueue().poll());
                         //проверяет заданный интервал и если он проблемный, то добавляет в очередь для вывода
@@ -68,6 +65,15 @@ public class LogProcessing extends Thread {
         if(!groupData.isEmpty()){
             addFailureInterval(groupAnalyzerAvailability.analyze(tempData, tempData, groupData));
         }
+
+    }
+    //Проверяет и добавляет несоответсвующий требованиям проблемный интервал
+    private boolean addFailureInterval(Interval interval){
+        if(interval.getPercAvailability() >= 0){
+            OutputQueueSingleton.getInstance().getOutputQueue().add(interval);
+            return true;
+        }
+        return false;
     }
 
     public void setReading(boolean reading) {

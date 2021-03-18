@@ -58,7 +58,6 @@ public class ArgsChecker {
             } else if (args[4].equals("-u")){
                 minPercAvailability = Double.parseDouble(args[5]);
             } else {
-                //System.out.println("You did not specify a parameter -u <double> (minimum acceptable level (percentage) of availability) ");
                 throw new WrongPercException();
             }
         return true;
