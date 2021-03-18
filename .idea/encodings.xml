@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/models/InputQueueSingleton.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/Main.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/exceptions/NoInputException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/exceptions/argumentsExceptions/ArgumentException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/exceptions/argumentsExceptions/NoEnoughArgsException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/exceptions/argumentsExceptions/WrongFileException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/exceptions/argumentsExceptions/WrongMillisException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/exceptions/argumentsExceptions/WrongPercException.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/logHandlers/LogProcessing.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/logHandlers/LogReader.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/models/InputQueueSingleton.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/models/Interval.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/models/OutputQueueSingleton.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/utils/ArgsChecker.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/utils/GroupAnalyzerAvailability.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/ru/farpost/analyze/viewControllers/IntervalsOutput.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/ru/farpost/analyze/MainTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/ru/farpost/analyze/logHandlers/GroupAnalyzerAvailabilityTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/ru/farpost/analyze/logHandlers/LogProcessingTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/ru/farpost/analyze/logHandlers/LogReaderTest.java" charset="UTF-8" />
   </component>
 </project>
