@@ -3,8 +3,8 @@ package ru.farpost.analyze.models;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-//Это синглтон для чтения из файла логов. В него записываются логи и передаются в класс LogProcessing
-//для обработки
+//Р­С‚Рѕ СЃРёРЅРіР»С‚РѕРЅ РґР»СЏ С‡С‚РµРЅРёСЏ РёР· С„Р°Р№Р»Р° Р»РѕРіРѕРІ. Р’ РЅРµРіРѕ Р·Р°РїРёСЃС‹РІР°СЋС‚СЃСЏ Р»РѕРіРё Рё РїРµСЂРµРґР°СЋС‚СЃСЏ РІ РєР»Р°СЃСЃ LogProcessing
+//РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё
 public class InputQueueSingleton {
 
     private static volatile InputQueueSingleton instance;

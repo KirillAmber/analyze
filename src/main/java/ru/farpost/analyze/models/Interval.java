@@ -1,7 +1,7 @@
 package ru.farpost.analyze.models;
 
 
-//Модель для вывода интервалов времени с их долей доступности
+//РњРѕРґРµР»СЊ РґР»СЏ РІС‹РІРѕРґР° РёРЅС‚РµСЂРІР°Р»РѕРІ РІСЂРµРјРµРЅРё СЃ РёС… РґРѕР»РµР№ РґРѕСЃС‚СѓРїРЅРѕСЃС‚Рё
 public class Interval implements Comparable<Interval> {
     private String dataS;
     private String dataF;

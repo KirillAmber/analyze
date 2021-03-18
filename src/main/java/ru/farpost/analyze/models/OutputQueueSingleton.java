@@ -2,8 +2,8 @@ package ru.farpost.analyze.models;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-//Это синглтон для вывода очереди интервалов в терминал. Он принимает из класса LogProcessing обработанные
-//логи и помещает их в виде объектов Interval в очередь данного синглтона.
+//Р­С‚Рѕ СЃРёРЅРіР»С‚РѕРЅ РґР»СЏ РІС‹РІРѕРґР° РѕС‡РµСЂРµРґРё РёРЅС‚РµСЂРІР°Р»РѕРІ РІ С‚РµСЂРјРёРЅР°Р». РћРЅ РїСЂРёРЅРёРјР°РµС‚ РёР· РєР»Р°СЃСЃР° LogProcessing РѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹Рµ
+//Р»РѕРіРё Рё РїРѕРјРµС‰Р°РµС‚ РёС… РІ РІРёРґРµ РѕР±СЉРµРєС‚РѕРІ Interval РІ РѕС‡РµСЂРµРґСЊ РґР°РЅРЅРѕРіРѕ СЃРёРЅРіР»С‚РѕРЅР°.
 public class OutputQueueSingleton {
 
     private static volatile OutputQueueSingleton instance;

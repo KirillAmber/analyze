@@ -22,7 +22,8 @@ public class LogProcessingTest {
     }
     @Before
     public void setUp() {
-        //должно пройти 1/3 -> 33.33 доступность
+        System.out.println("LogProcessing Test started");
+        //РґРѕР»Р¶РЅРѕ РїСЂРѕР№С‚Рё 1/3 -> 33.33 РґРѕСЃС‚СѓРїРЅРѕСЃС‚СЊ
         InputQueueSingleton.getInstance().getInputQueue().add(
                 "192.168.32.181 - - [14/06/2017:16:47:02 +1000] \"PUT /rest/v1.4/documents?zone=default&_rid=e156f7e HTTP/1.1\" 200 2 69.669118 \"-\" \"@list-item-updater\" prio:0");
         InputQueueSingleton.getInstance().getInputQueue().add(
@@ -34,6 +35,7 @@ public class LogProcessingTest {
 
     @After
     public void tearDown() {
+        System.out.println("LogProcessing Test finished");
     }
 
 

@@ -2,9 +2,9 @@ package ru.farpost.analyze.viewControllers;
 
 import ru.farpost.analyze.models.Interval;
 import ru.farpost.analyze.models.OutputQueueSingleton;
-//Этот класс выводит временные интервалы,
-// в которых доля отказов системы превышала указанную границу,
-// а также уровень доступности.
+//Р­С‚РѕС‚ РєР»Р°СЃСЃ РІС‹РІРѕРґРёС‚ РІСЂРµРјРµРЅРЅС‹Рµ РёРЅС‚РµСЂРІР°Р»С‹,
+// РІ РєРѕС‚РѕСЂС‹С… РґРѕР»СЏ РѕС‚РєР°Р·РѕРІ СЃРёСЃС‚РµРјС‹ РїСЂРµРІС‹С€Р°Р»Р° СѓРєР°Р·Р°РЅРЅСѓСЋ РіСЂР°РЅРёС†Сѓ,
+// Р° С‚Р°РєР¶Рµ СѓСЂРѕРІРµРЅСЊ РґРѕСЃС‚СѓРїРЅРѕСЃС‚Рё.
 public class IntervalsOutput extends Thread {
     private boolean isProcessing;
 

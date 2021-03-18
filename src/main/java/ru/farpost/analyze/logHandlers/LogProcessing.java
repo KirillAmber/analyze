@@ -14,11 +14,11 @@ public class LogProcessing extends Thread {
     private final GroupAnalyzerAvailability groupAnalyzerAvailability;
     private boolean isReading;
 
-    //Данный класс обрабатывает строки из файла
+    //Р”Р°РЅРЅС‹Р№ РєР»Р°СЃСЃ РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚ СЃС‚СЂРѕРєРё РёР· С„Р°Р№Р»Р°
     public LogProcessing(double minPercAvailability, double millisAcceptable){
-        //groupData - очередь, которая будет содержать строчки для проверки на успешность запроса
+        //groupData - РѕС‡РµСЂРµРґСЊ, РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ СЃС‚СЂРѕС‡РєРё РґР»СЏ РїСЂРѕРІРµСЂРєРё РЅР° СѓСЃРїРµС€РЅРѕСЃС‚СЊ Р·Р°РїСЂРѕСЃР°
         this.groupData = new ArrayDeque<>();
-        //isReading - булевая переменная, которая будет всегда true, пока bufferedReader не прочитает весь файл
+        //isReading - Р±СѓР»РµРІР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ, РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ РІСЃРµРіРґР° true, РїРѕРєР° bufferedReader РЅРµ РїСЂРѕС‡РёС‚Р°РµС‚ РІРµСЃСЊ С„Р°Р№Р»
         this.isReading = true;
         groupAnalyzerAvailability = new GroupAnalyzerAvailability(minPercAvailability, millisAcceptable);
     }
@@ -31,15 +31,15 @@ public class LogProcessing extends Thread {
 
 
     private void process(){
-        //паттерн для выявления время начала запроса
+        //РїР°С‚С‚РµСЂРЅ РґР»СЏ РІС‹СЏРІР»РµРЅРёСЏ РІСЂРµРјСЏ РЅР°С‡Р°Р»Р° Р·Р°РїСЂРѕСЃР°
         Pattern datatimePattern = Pattern.compile("(\\d{2}[:]\\d{2}[:]\\d{2}(?:\\s))");
         Matcher datatimeMatcher;
         /*
-        tempData предназначеня для сбора данных по интервалам.
-        Когда tempData изменяется, то создаётся новый интервал
+        tempData РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅСЏ РґР»СЏ СЃР±РѕСЂР° РґР°РЅРЅС‹С… РїРѕ РёРЅС‚РµСЂРІР°Р»Р°Рј.
+        РљРѕРіРґР° tempData РёР·РјРµРЅСЏРµС‚СЃСЏ, С‚Рѕ СЃРѕР·РґР°С‘С‚СЃСЏ РЅРѕРІС‹Р№ РёРЅС‚РµСЂРІР°Р»
          */
         String tempData = "";
-        //берём данные из очереди
+        //Р±РµСЂС‘Рј РґР°РЅРЅС‹Рµ РёР· РѕС‡РµСЂРµРґРё
         while (isReading || InputQueueSingleton.getInstance().getInputQueue().size()> 0) {
             if(InputQueueSingleton.getInstance().getInputQueue().peek()!=null){
                 datatimeMatcher = datatimePattern.matcher(InputQueueSingleton.getInstance().getInputQueue().peek());
@@ -51,23 +51,23 @@ public class LogProcessing extends Thread {
                     else if(tempData.equals(datatimeMatcher.group())){
                         groupData.add(InputQueueSingleton.getInstance().getInputQueue().poll());
                     }
-                    //здесь мы анализируем данные из groupData и выгружаем в map
+                    //Р·РґРµСЃСЊ РјС‹ Р°РЅР°Р»РёР·РёСЂСѓРµРј РґР°РЅРЅС‹Рµ РёР· groupData Рё РІС‹РіСЂСѓР¶Р°РµРј РІ map
                     else if(!tempData.equals(datatimeMatcher.group())){
                         groupData.add(InputQueueSingleton.getInstance().getInputQueue().poll());
-                        //проверяет заданный интервал и если он проблемный, то добавляет в очередь для вывода
+                        //РїСЂРѕРІРµСЂСЏРµС‚ Р·Р°РґР°РЅРЅС‹Р№ РёРЅС‚РµСЂРІР°Р» Рё РµСЃР»Рё РѕРЅ РїСЂРѕР±Р»РµРјРЅС‹Р№, С‚Рѕ РґРѕР±Р°РІР»СЏРµС‚ РІ РѕС‡РµСЂРµРґСЊ РґР»СЏ РІС‹РІРѕРґР°
                         addFailureInterval(groupAnalyzerAvailability.analyze(tempData, datatimeMatcher.group(), groupData));
                         tempData = datatimeMatcher.group();
                     }
                 }
             }
         }
-        //если вдруг в логах только одна дата
+        //РµСЃР»Рё РІРґСЂСѓРі РІ Р»РѕРіР°С… С‚РѕР»СЊРєРѕ РѕРґРЅР° РґР°С‚Р°
         if(!groupData.isEmpty()){
             addFailureInterval(groupAnalyzerAvailability.analyze(tempData, tempData, groupData));
         }
 
     }
-    //Проверяет и добавляет несоответсвующий требованиям проблемный интервал
+    //РџСЂРѕРІРµСЂСЏРµС‚ Рё РґРѕР±Р°РІР»СЏРµС‚ РЅРµСЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰РёР№ С‚СЂРµР±РѕРІР°РЅРёСЏРј РїСЂРѕР±Р»РµРјРЅС‹Р№ РёРЅС‚РµСЂРІР°Р»
     private boolean addFailureInterval(Interval interval){
         if(interval.getPercAvailability() >= 0){
             OutputQueueSingleton.getInstance().getOutputQueue().add(interval);

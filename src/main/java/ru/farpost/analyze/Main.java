@@ -8,13 +8,13 @@ import ru.farpost.analyze.utils.ArgsChecker;
 import ru.farpost.analyze.viewControllers.IntervalsOutput;
 
 import java.io.*;
-//Требуется написать алгоритм читающий access-лог и выполняющий анализ отказов автоматически.
+//РўСЂРµР±СѓРµС‚СЃСЏ РЅР°РїРёСЃР°С‚СЊ Р°Р»РіРѕСЂРёС‚Рј С‡РёС‚Р°СЋС‰РёР№ access-Р»РѕРі Рё РІС‹РїРѕР»РЅСЏСЋС‰РёР№ Р°РЅР°Р»РёР· РѕС‚РєР°Р·РѕРІ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё.
 public class Main {
     public static void main(String[] args) throws IOException, ArgumentException, NoInputException {
-        //сначала проверяем аргументы
+        //СЃРЅР°С‡Р°Р»Р° РїСЂРѕРІРµСЂСЏРµРј Р°СЂРіСѓРјРµРЅС‚С‹
         ArgsChecker argsChecker = new ArgsChecker();
         if (argsChecker.check(args)) {
-            //открытие файла
+            //РѕС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°
             BufferedReader input;
             if(argsChecker.getFilename().isEmpty()) {
                  input = new BufferedReader(new InputStreamReader(System.in));
@@ -24,17 +24,17 @@ public class Main {
             if(!input.ready()){
                 throw new NoInputException();
             }
-            //инициализация потоков
+            //РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРѕС‚РѕРєРѕРІ
             LogReader logReader = new LogReader(input);
             LogProcessing logProcessing = new LogProcessing(argsChecker.getMinPercAvailability(), argsChecker.getMillisAcceptable());
             IntervalsOutput intervalsOutput = new IntervalsOutput();
-            //запуск потоков
+            //Р·Р°РїСѓСЃРє РїРѕС‚РѕРєРѕРІ
             logReader.start();
             logProcessing.start();
             logProcessing.setPriority(6);
             intervalsOutput.start();
             intervalsOutput.setPriority(6);
-            //последовательное отключение потоков
+            //РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕРµ РѕС‚РєР»СЋС‡РµРЅРёРµ РїРѕС‚РѕРєРѕРІ
             while (logReader.isAlive()) { }
             logProcessing.setReading(false);
             while (logProcessing.isAlive()) { }

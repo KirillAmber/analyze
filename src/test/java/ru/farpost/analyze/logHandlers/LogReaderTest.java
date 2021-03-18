@@ -27,16 +27,18 @@ public class LogReaderTest {
 
     @Before
     public void setUp(){
+        System.out.println("LogReader Test started");
 
     }
 
     @After
     public void tearDown() {
-        //подсчёт размера коллекции и используемый объём памяти
+        //РїРѕРґСЃС‡С‘С‚ СЂР°Р·РјРµСЂР° РєРѕР»Р»РµРєС†РёРё Рё РёСЃРїРѕР»СЊР·СѓРµРјС‹Р№ РѕР±СЉС‘Рј РїР°РјСЏС‚Рё
         System.out.println(InputQueueSingleton.getInstance().getInputQueue().size());
         Runtime rt = Runtime.getRuntime();
         long usedMB = (rt.totalMemory() - rt.freeMemory()) / 1024 / 1024;
         System.out.println("Used mb: " + usedMB);
+        System.out.println("LogReader Test finished");
     }
 
 

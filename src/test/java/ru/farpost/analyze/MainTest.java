@@ -21,21 +21,21 @@ public class MainTest {
     @Parameterized.Parameters
     public static List<String[][]> testParams(){
         return Arrays.asList(
-                //0 адекватный тест
+                //0 Р°РґРµРєРІР°С‚РЅС‹Р№ С‚РµСЃС‚
                 new String[][]{new String[]{"-u", "99", "-t", "45", "-f", "access.log"}},
-                //1 неправильное имя файла
+                //1 РЅРµРїСЂР°РІРёР»СЊРЅРѕРµ РёРјСЏ С„Р°Р№Р»Р°
                 new String[][]{new String[]{"-u", "99", "-t", "45", "-f", "access.logss"}},
-                //2,3,4 перемешанные аргументы
+                //2,3,4 РїРµСЂРµРјРµС€Р°РЅРЅС‹Рµ Р°СЂРіСѓРјРµРЅС‚С‹
                 new String[][]{new String[]{"-t", "45", "-u", "99",  "-f", "access.log"}},
                 new String[][]{new String[]{"-f", "access.log", "-t", "45", "-u", "99"}},
                 new String[][]{new String[]{"-t", "45", "-u", "99",  "-f", "access.log"}},
-                //5 неправильно заданны названия аргументов
+                //5 РЅРµРїСЂР°РІРёР»СЊРЅРѕ Р·Р°РґР°РЅРЅС‹ РЅР°Р·РІР°РЅРёСЏ Р°СЂРіСѓРјРµРЅС‚РѕРІ
                 new String[][]{new String[]{"t", "45", "u", "99",  "-f", "access.log"}},
-                //6 пустые аргументы
+                //6 РїСѓСЃС‚С‹Рµ Р°СЂРіСѓРјРµРЅС‚С‹
                 new String[][]{new String[]{"-t", "", "-u", ""}},
-                //7 без файла
+                //7 Р±РµР· С„Р°Р№Р»Р°
                 new String[][]{new String[]{"-t", "45", "-u", "99"}},
-                //8 с одним аргументом
+                //8 СЃ РѕРґРЅРёРј Р°СЂРіСѓРјРµРЅС‚РѕРј
                 new String[][]{new String[]{"-u", "99"}});
     }
     public MainTest(String [] args){
@@ -43,10 +43,12 @@ public class MainTest {
     }
     @Before
     public void setUp(){
+        System.out.println("Main Test started");
     }
 
     @After
     public void tearDown(){
+        System.out.println("Main Test finished");
     }
 
     @Test

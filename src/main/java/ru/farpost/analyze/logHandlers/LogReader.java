@@ -3,7 +3,7 @@ package ru.farpost.analyze.logHandlers;
 import ru.farpost.analyze.models.InputQueueSingleton;
 
 import java.io.*;
-//Класс предназначен для считывание строк из файла и добавление строк в очередь
+//РљР»Р°СЃСЃ РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ РґР»СЏ СЃС‡РёС‚С‹РІР°РЅРёРµ СЃС‚СЂРѕРє РёР· С„Р°Р№Р»Р° Рё РґРѕР±Р°РІР»РµРЅРёРµ СЃС‚СЂРѕРє РІ РѕС‡РµСЂРµРґСЊ
 public class LogReader extends Thread {
     private final BufferedReader input;
 
