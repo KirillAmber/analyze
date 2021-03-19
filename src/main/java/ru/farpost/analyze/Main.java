@@ -13,7 +13,9 @@ public class Main {
     public static void main(String[] args) throws IOException, ArgumentException, NoInputException {
         //сначала проверяем аргументы
         ArgsChecker argsChecker = new ArgsChecker();
-        if (argsChecker.check(args)) {
+        if (!argsChecker.check(args)) {
+            return;
+        }
             //открытие файла
             BufferedReader input;
             if(argsChecker.getFilename().isEmpty()) {
@@ -39,6 +41,6 @@ public class Main {
             logProcessing.setReading(false);
             while (logProcessing.isAlive()) { }
             intervalsOutput.setProcessing(false);
-        }
+
     }
 }
