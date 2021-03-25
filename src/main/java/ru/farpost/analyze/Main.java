@@ -1,6 +1,8 @@
 package ru.farpost.analyze;
 
-import ru.farpost.analyze.exceptions.NoInputException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.farpost.analyze.config.ContextConfig;
 import ru.farpost.analyze.exceptions.argumentsExceptions.ArgumentException;
 import ru.farpost.analyze.logHandlers.LogProcessing;
 import ru.farpost.analyze.logHandlers.LogReader;
@@ -12,7 +14,10 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) throws IOException, ArgumentException, NoInputException {
         //сначала проверяем аргументы
-        ArgsChecker argsChecker = new ArgsChecker();
+        ApplicationContext ctx =
+                new AnnotationConfigApplicationContext(ContextConfig.class);
+        ArgsChecker argsChecker = ctx.getBean("argsChecker", ArgsChecker.class);
+
         if (!argsChecker.check(args)) {
             return;
         }
@@ -27,9 +32,14 @@ public class Main {
                 throw new NoInputException();
             }
             //инициализация потоков
-            LogReader logReader = new LogReader(input);
-            LogProcessing logProcessing = new LogProcessing(argsChecker.getMinPercAvailability(), argsChecker.getMillisAcceptable());
-            IntervalsOutput intervalsOutput = new IntervalsOutput();
+            LogReader logReader = ctx.getBean("logReader", LogReader.class);
+            logReader.setInput(input);
+
+            LogProcessing logProcessing = ctx.getBean("logProcessing", LogProcessing.class);
+            logProcessing.getGroupAnalyzerAvailability().setMillisAcceptable(argsChecker.getMillisAcceptable());
+            logProcessing.getGroupAnalyzerAvailability().setMinPercAvailability(argsChecker.getMinPercAvailability());
+
+            IntervalsOutput intervalsOutput = ctx.getBean("intervalsOutput", IntervalsOutput.class);
             //запуск потоков
             logReader.start();
             logProcessing.start();

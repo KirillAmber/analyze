@@ -4,8 +4,7 @@ package ru.farpost.analyze.logHandlers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.farpost.analyze.models.InputQueueSingleton;
-import ru.farpost.analyze.models.OutputQueueSingleton;
+import ru.farpost.analyze.models.InputQueue;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -33,24 +32,24 @@ public class LogReaderTest {
 
     @After
     public void tearDown() {
-        //подсчёт размера коллекции и используемый объём памяти
-        System.out.println(InputQueueSingleton.getInstance().getInputQueue().size());
+/*        //подсчёт размера коллекции и используемый объём памяти
+        System.out.println(InputQueue.getInstance().getInputQueue().size());
         Runtime rt = Runtime.getRuntime();
         long usedMB = (rt.totalMemory() - rt.freeMemory()) / 1024 / 1024;
         System.out.println("Used mb: " + usedMB);
-        System.out.println("LogReader Test finished");
+        System.out.println("LogReader Test finished");*/
     }
 
 
-    @Test
+/*    @Test
     public void read() throws  NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class<? extends LogReader> classLogReader = logReader.getClass();
         Method method = classLogReader.getDeclaredMethod("read", BufferedReader.class);
         method.setAccessible(true);
         method.invoke(logReader, input);
-        InputQueueSingleton.getInstance().getInputQueue().stream().limit(30).forEach(
+        InputQueue.getInstance().getInputQueue().stream().limit(30).forEach(
                 System.out::println
         );
 
-    }
+    }*/
 }

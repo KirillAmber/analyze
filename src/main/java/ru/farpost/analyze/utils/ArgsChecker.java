@@ -1,5 +1,6 @@
 package ru.farpost.analyze.utils;
 
+import org.springframework.stereotype.Service;
 import ru.farpost.analyze.exceptions.argumentsExceptions.*;
 
 import java.util.Scanner;
@@ -13,6 +14,7 @@ import java.util.Scanner;
     *Как опция для пользователя, так и для тестирования можно прописать дополнительно
         в аргументах -f <filename> и программа прочитает файл из аргумента
  */
+@Service
 public class ArgsChecker {
     //Минимально допустимый уровень доступности
     private double minPercAvailability;

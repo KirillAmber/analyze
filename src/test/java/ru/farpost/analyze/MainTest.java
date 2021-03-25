@@ -5,10 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import ru.farpost.analyze.exceptions.NoInputException;
 import ru.farpost.analyze.exceptions.argumentsExceptions.ArgumentException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -33,9 +31,7 @@ public class MainTest {
                 new String[][]{new String[]{"t", "45", "u", "99",  "-f", "access.log"}},
                 //6 пустые аргументы
                 new String[][]{new String[]{"-t", "", "-u", ""}},
-                //7 без файла
-                new String[][]{new String[]{"-t", "45", "-u", "99"}},
-                //8 с одним аргументом
+                //7 с одним аргументом
                 new String[][]{new String[]{"-u", "99"}});
     }
     public MainTest(String [] args){
@@ -52,7 +48,7 @@ public class MainTest {
     }
 
     @Test
-    public void main() throws IOException, ArgumentException, NoInputException {
+    public void main() throws IOException, ArgumentException {
         Main.main(args);
     }
 }

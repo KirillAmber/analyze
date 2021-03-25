@@ -1,15 +1,21 @@
 package ru.farpost.analyze.logHandlers;
 
-import ru.farpost.analyze.models.InputQueueSingleton;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ru.farpost.analyze.models.InputQueue;
 
 import java.io.*;
 //Класс предназначен для считывание строк из файла и добавление строк в очередь
+@Component
 public class LogReader extends Thread {
-    private final BufferedReader input;
+    private  BufferedReader input;
+    private InputQueue inputQueue;
 
     public LogReader(BufferedReader input){
         this.input = input;
     }
+
+    public LogReader(){}
 
     @Override
     public void run() {
@@ -26,8 +32,17 @@ public class LogReader extends Thread {
                 e.printStackTrace();
             }
             if(stringLog.isEmpty()) continue;
-            InputQueueSingleton.getInstance().getInputQueue().add(stringLog);
+            inputQueue.getInputQueue().add(stringLog);
         }
+    }
+
+    @Autowired
+    public void setInputQueue(InputQueue inputQueue){
+        this.inputQueue = inputQueue;
+    }
+
+    public void setInput(BufferedReader input) {
+        this.input = input;
     }
 }
 

@@ -1,12 +1,14 @@
 package ru.farpost.analyze.utils;
 
 
+import org.springframework.stereotype.Service;
 import ru.farpost.analyze.models.Interval;
 
 import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 //Этот класс проверяет интервал на наличие ошибок и на долю доступности
+@Service
 public class GroupAnalyzerAvailability {
     private final String ERROR_SERVER_0 = "500";
     private final String ERROR_SERVER_99 = "599";
@@ -24,6 +26,8 @@ public class GroupAnalyzerAvailability {
     private int amountFailures;
 
     public GroupAnalyzerAvailability (){
+        millisAcceptable = -1;
+        minPercAvailability = -1;
 
     }
 
@@ -72,5 +76,13 @@ public class GroupAnalyzerAvailability {
     //вычисление процентного соотношения
     private double computeAvailability(int totalRequests, int amountFailures){
         return 100.0 - ((double)amountFailures/totalRequests * 100);
+    }
+
+    public void setMinPercAvailability(double minPercAvailability) {
+        this.minPercAvailability = minPercAvailability;
+    }
+
+    public void setMillisAcceptable(double millisAcceptable) {
+        this.millisAcceptable = millisAcceptable;
     }
 }

@@ -1,17 +1,22 @@
 package ru.farpost.analyze.logHandlers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.farpost.analyze.utils.GroupAnalyzerAvailability;
 import ru.farpost.analyze.models.Interval;
-import ru.farpost.analyze.models.InputQueueSingleton;
-import ru.farpost.analyze.models.OutputQueueSingleton;
+import ru.farpost.analyze.models.InputQueue;
+import ru.farpost.analyze.models.OutputQueue;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class LogProcessing extends Thread {
-    private final Queue<String> groupData;
-    private final GroupAnalyzerAvailability groupAnalyzerAvailability;
+    private  Queue<String> groupData;
+    private  GroupAnalyzerAvailability groupAnalyzerAvailability;
+    private InputQueue inputQueue;
+    private OutputQueue outputQueue;
     private boolean isReading;
 
     //Данный класс обрабатывает строки из файла
@@ -20,7 +25,12 @@ public class LogProcessing extends Thread {
         this.groupData = new ArrayDeque<>();
         //isReading - булевая переменная, которая будет всегда true, пока bufferedReader не прочитает весь файл
         this.isReading = true;
-        groupAnalyzerAvailability = new GroupAnalyzerAvailability(minPercAvailability, millisAcceptable);
+        this.groupAnalyzerAvailability = new GroupAnalyzerAvailability(minPercAvailability, millisAcceptable);
+    }
+    public LogProcessing(){
+        this.groupData = new ArrayDeque<>();
+        this.isReading = true;
+        this.groupAnalyzerAvailability = new GroupAnalyzerAvailability();
     }
 
     @Override
@@ -40,20 +50,20 @@ public class LogProcessing extends Thread {
          */
         String tempData = "";
         //берём данные из очереди
-        while (isReading || InputQueueSingleton.getInstance().getInputQueue().size()> 0) {
-            if(InputQueueSingleton.getInstance().getInputQueue().peek()!=null){
-                datatimeMatcher = datatimePattern.matcher(InputQueueSingleton.getInstance().getInputQueue().peek());
+        while (isReading || inputQueue.getInputQueue().size()> 0) {
+            if(inputQueue.getInputQueue().peek()!=null){
+                datatimeMatcher = datatimePattern.matcher(inputQueue.getInputQueue().peek());
                 if(datatimeMatcher.find()){
                     if(tempData.isEmpty()){
                         tempData = datatimeMatcher.group();
-                        groupData.add(InputQueueSingleton.getInstance().getInputQueue().poll());
+                        groupData.add(inputQueue.getInputQueue().poll());
                     }
                     else if(tempData.equals(datatimeMatcher.group())){
-                        groupData.add(InputQueueSingleton.getInstance().getInputQueue().poll());
+                        groupData.add(inputQueue.getInputQueue().poll());
                     }
                     //здесь мы анализируем данные из groupData и выгружаем в map
                     else if(!tempData.equals(datatimeMatcher.group())){
-                        groupData.add(InputQueueSingleton.getInstance().getInputQueue().poll());
+                        groupData.add(inputQueue.getInputQueue().poll());
                         //проверяет заданный интервал и если он проблемный, то добавляет в очередь для вывода
                         addFailureInterval(groupAnalyzerAvailability.analyze(tempData, datatimeMatcher.group(), groupData));
                         tempData = datatimeMatcher.group();
@@ -70,7 +80,7 @@ public class LogProcessing extends Thread {
     //Проверяет и добавляет несоответсвующий требованиям проблемный интервал
     private boolean addFailureInterval(Interval interval){
         if(interval.getPercAvailability() >= 0){
-            OutputQueueSingleton.getInstance().getOutputQueue().add(interval);
+            outputQueue.getOutputQueue().add(interval);
             return true;
         }
         return false;
@@ -80,4 +90,18 @@ public class LogProcessing extends Thread {
         isReading = reading;
     }
 
+    @Autowired
+    public void setInputQueue(InputQueue inputQueue){
+        this.inputQueue = inputQueue;
+    }
+
+    @Autowired
+    public void setOutputQueue(OutputQueue outputQueue){
+        this.outputQueue = outputQueue;
+    }
+
+
+    public GroupAnalyzerAvailability getGroupAnalyzerAvailability() {
+        return groupAnalyzerAvailability;
+    }
 }
