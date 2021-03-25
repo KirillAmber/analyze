@@ -8,7 +8,11 @@ import org.junit.runners.Parameterized;
 import ru.farpost.analyze.exceptions.argumentsExceptions.ArgumentException;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(Parameterized.class)
@@ -50,5 +54,13 @@ public class MainTest {
     @Test
     public void main() throws IOException, ArgumentException {
         Main.main(args);
+    }
+
+    @Test
+    public void testDate() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String dataString = "16:40:53";
+        Date date = simpleDateFormat.parse(dataString);
+        System.out.println(simpleDateFormat.format(date));
     }
 }

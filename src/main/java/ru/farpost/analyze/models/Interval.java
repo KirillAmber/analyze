@@ -1,31 +1,33 @@
 package ru.farpost.analyze.models;
 
 
+import java.util.Date;
+
 //Модель для вывода интервалов времени с их долей доступности
 public class Interval implements Comparable<Interval> {
-    private String dataS;
-    private String dataF;
+    private Date dataS;
+    private Date dataF;
     private double percAvailability;
 
-    public Interval(String dataS, String dataF) {
+    public Interval(Date dataS, Date dataF) {
         this.dataS = dataS;
         this.dataF = dataF;
         percAvailability = -1;
     }
 
-    public String getDataS() {
+    public Date getDataS() {
         return dataS;
     }
 
-    public void setDataS(String dataS) {
+    public void setDataS(Date dataS) {
         this.dataS = dataS;
     }
 
-    public String getDataF() {
+    public Date getDataF() {
         return dataF;
     }
 
-    public void setDataF(String dataF) {
+    public void setDataF(Date dataF) {
         this.dataF = dataF;
     }
 
@@ -40,8 +42,8 @@ public class Interval implements Comparable<Interval> {
     @Override
     public String toString() {
         return "Interval{" +
-                "dataS='" + dataS + '\'' +
-                ", dataF='" + dataF + '\'' +
+                "dataS=" + dataS +
+                ", dataF=" + dataF +
                 ", percAvailability=" + percAvailability +
                 '}';
     }

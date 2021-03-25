@@ -4,6 +4,8 @@ package ru.farpost.analyze.utils;
 import org.springframework.stereotype.Service;
 import ru.farpost.analyze.models.Interval;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,7 +40,7 @@ public class GroupAnalyzerAvailability {
     }
 
     //проверяет долю доступности в этом интервале и возвращает объект Interval с выявленной долей
-    public Interval analyze(String dataS, String dataF, Queue<String> groupData){
+    public Interval analyze(Date dataS, Date dataF, Queue<String> groupData){
         //analyze
         Interval failureInterval = new Interval(dataS, dataF);
         totalRequests = groupData.size();
@@ -77,6 +79,7 @@ public class GroupAnalyzerAvailability {
     private double computeAvailability(int totalRequests, int amountFailures){
         return 100.0 - ((double)amountFailures/totalRequests * 100);
     }
+
 
     public void setMinPercAvailability(double minPercAvailability) {
         this.minPercAvailability = minPercAvailability;
