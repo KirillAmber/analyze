@@ -41,13 +41,12 @@ public class LogProcessing extends Thread {
         super.run();
         try {
             process();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException | InterruptedException e) {
         }
     }
 
 
-    private void process() throws ParseException {
+    private void process() throws ParseException, InterruptedException {
         //паттерн для выявления время начала запроса
         Pattern datatimePattern = Pattern.compile("(\\d{2}[:]\\d{2}[:]\\d{2}(?:\\s))");
         Matcher datatimeMatcher;
@@ -57,26 +56,25 @@ public class LogProcessing extends Thread {
          */
         Date tempData = null;
         //берём данные из очереди
-        while (isReading || inputQueue.getInputQueue().size()> 0) {
-            if(inputQueue.getInputQueue().peek()!=null){
-                datatimeMatcher = datatimePattern.matcher(inputQueue.getInputQueue().peek());
-                if(datatimeMatcher.find()){
-                    //переводим строку в Date
-                    Date foundTime = dataFormat.parse(datatimeMatcher.group());
-                    if(tempData == null){
-                        tempData = foundTime;
-                        groupData.add(inputQueue.getInputQueue().poll());
-                    }
-                    else if(tempData.equals(foundTime)){
-                        groupData.add(inputQueue.getInputQueue().poll());
-                    }
-                    //здесь мы анализируем данные из groupData и выгружаем в map
-                    else if(!tempData.equals(foundTime)){
-                        groupData.add(inputQueue.getInputQueue().poll());
-                        //проверяет заданный интервал и если он проблемный, то добавляет в очередь для вывода
-                        addFailureInterval(groupAnalyzerAvailability.analyze(tempData, foundTime, groupData));
-                        tempData = foundTime;
-                    }
+        while (isReading) {
+            String row = inputQueue.getInputQueue().take();
+            datatimeMatcher = datatimePattern.matcher(row);
+            if(datatimeMatcher.find()){
+                //переводим строку в Date
+                Date foundTime = dataFormat.parse(datatimeMatcher.group());
+                if(tempData == null){
+                    tempData = foundTime;
+                    groupData.add(row);
+                }
+                else if(tempData.equals(foundTime)){
+                    groupData.add(row);
+                }
+                //здесь мы анализируем данные из groupData и выгружаем в outputQueue
+                else if(!tempData.equals(foundTime)){
+                    groupData.add(row);
+                    //проверяет заданный интервал и если он проблемный, то добавляет в очередь для вывода
+                    addFailureInterval(groupAnalyzerAvailability.analyze(tempData, foundTime, groupData));
+                    tempData = foundTime;
                 }
             }
         }
@@ -87,9 +85,9 @@ public class LogProcessing extends Thread {
 
     }
     //Проверяет и добавляет несоответсвующий требованиям проблемный интервал
-    private boolean addFailureInterval(Interval interval){
+    private boolean addFailureInterval(Interval interval) throws InterruptedException {
         if(interval.getPercAvailability() >= 0){
-            outputQueue.getOutputQueue().add(interval);
+            outputQueue.getOutputQueue().put(interval);
             return true;
         }
         return false;
@@ -97,6 +95,9 @@ public class LogProcessing extends Thread {
 
     public void setReading(boolean reading) {
         isReading = reading;
+        if(!isReading){
+            interrupt();
+        }
     }
 
     @Autowired

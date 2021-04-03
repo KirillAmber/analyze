@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 
 //Это синглтон для чтения из файла логов. В него записываются логи и передаются в класс LogProcessing
 //для обработки
@@ -13,14 +14,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Scope("singleton")
 public class InputQueue {
 
-    private final ConcurrentLinkedQueue<String> inputQueue;
+    private final SynchronousQueue<String> inputQueue;
 
     public InputQueue() {
-        inputQueue = new ConcurrentLinkedQueue<String>();
+        inputQueue = new SynchronousQueue<>();
     }
 
 
-    public Queue<String> getInputQueue() {
+    public SynchronousQueue<String> getInputQueue() {
         return inputQueue;
     }
 

@@ -20,10 +20,14 @@ public class LogReader extends Thread {
     @Override
     public void run() {
         super.run();
-        read(input);
+        try {
+            read(input);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void read(BufferedReader input) {
+    private void read(BufferedReader input) throws InterruptedException {
         String stringLog = "";
         while (true) {
             try {
@@ -32,7 +36,7 @@ public class LogReader extends Thread {
                 e.printStackTrace();
             }
             if(stringLog.isEmpty()) continue;
-            inputQueue.getInputQueue().add(stringLog);
+            inputQueue.getInputQueue().put(stringLog);
         }
     }
 

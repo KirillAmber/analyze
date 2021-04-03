@@ -52,15 +52,8 @@ public class MainTest {
     }
 
     @Test
-    public void main() throws IOException, ArgumentException {
+    public void main() throws IOException, ArgumentException, InterruptedException {
         Main.main(args);
     }
 
-    @Test
-    public void testDate() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-        String dataString = "16:40:53";
-        Date date = simpleDateFormat.parse(dataString);
-        System.out.println(simpleDateFormat.format(date));
-    }
 }

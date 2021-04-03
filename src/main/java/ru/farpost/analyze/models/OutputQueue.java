@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.SynchronousQueue;
 
 //Это синглтон для вывода очереди интервалов в терминал. Он принимает из класса LogProcessing обработанные
 //логи и помещает их в виде объектов Interval в очередь данного синглтона.
@@ -13,14 +14,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class OutputQueue {
 
 
-    private final ConcurrentLinkedQueue<Interval> outputQueue;
+    private final SynchronousQueue<Interval> outputQueue;
 
     public OutputQueue() {
-        outputQueue = new ConcurrentLinkedQueue<>();
+        outputQueue = new SynchronousQueue<>();
     }
 
 
-    public ConcurrentLinkedQueue<Interval> getOutputQueue() {
+    public SynchronousQueue<Interval> getOutputQueue() {
         return outputQueue;
     }
 

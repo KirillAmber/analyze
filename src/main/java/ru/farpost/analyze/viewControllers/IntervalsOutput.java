@@ -33,20 +33,24 @@ public class IntervalsOutput extends Thread {
     @Override
     public void run() {
         super.run();
-        display();
+        try {
+            display();
+        } catch (InterruptedException e) {
+        }
     }
 
-    private void display(){
-        while(isProcessing || outputQueue.getOutputQueue().size() > 0){
-            Interval interval;
-            if(outputQueue.getOutputQueue().peek()!=null) {
-                interval = outputQueue.getOutputQueue().poll();
+    private void display() throws InterruptedException {
+        while(isProcessing){
+                Interval interval = outputQueue.getOutputQueue().take();
                 System.out.format("%s \t %s \t %.2f\n", dateFormat.format(interval.getDataS()), dateFormat.format(interval.getDataF()), interval.getPercAvailability());
-            }
+
         }
     }
 
     public void setProcessing(boolean processing) {
         isProcessing = processing;
+        if(!isProcessing){
+            interrupt();
+        }
     }
 }

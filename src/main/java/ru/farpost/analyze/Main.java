@@ -40,14 +40,20 @@ public class Main {
             //запуск потоков
             logReader.start();
             logProcessing.start();
-            logProcessing.setPriority(6);
             intervalsOutput.start();
-            intervalsOutput.setPriority(6);
             //последовательное отключение потоков
-            while (logReader.isAlive()) { }
-            logProcessing.setReading(false);
-            while (logProcessing.isAlive()) { }
-            intervalsOutput.setProcessing(false);
+        try {
+            logReader.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logProcessing.setReading(false);
+        try {
+            logProcessing.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        intervalsOutput.setProcessing(false);
 
     }
 }
