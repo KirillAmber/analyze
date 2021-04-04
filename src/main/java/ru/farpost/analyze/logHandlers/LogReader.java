@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 import ru.farpost.analyze.models.InputQueue;
 
 import java.io.*;
+import java.util.Scanner;
+
 //Класс предназначен для считывание строк из файла и добавление строк в очередь
 @Component
 public class LogReader extends Thread {
-    private  BufferedReader input;
+    private BufferedReader input;
     private InputQueue inputQueue;
 
     public LogReader(BufferedReader input){
@@ -22,22 +24,19 @@ public class LogReader extends Thread {
         super.run();
         try {
             read(input);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void read(BufferedReader input) throws InterruptedException {
+    private void read(BufferedReader input) throws InterruptedException, IOException {
         String stringLog = "";
         while (true) {
-            try {
-                if ((stringLog = input.readLine()) == null) break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            if ((stringLog = input.readLine()) == null) break;
             if(stringLog.isEmpty()) continue;
             inputQueue.getInputQueue().put(stringLog);
         }
+        input.close();
     }
 
     @Autowired

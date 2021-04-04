@@ -10,6 +10,8 @@ import ru.farpost.analyze.utils.ArgsChecker;
 import ru.farpost.analyze.viewControllers.IntervalsOutput;
 
 import java.io.*;
+
+
 //Требуется написать алгоритм читающий access-лог и выполняющий анализ отказов автоматически.
 public class Main {
     public static void main(String[] args) throws IOException, ArgumentException{
@@ -26,7 +28,7 @@ public class Main {
             if(argsChecker.getFilename().isEmpty()) {
                  input = new BufferedReader(new InputStreamReader(System.in));
             } else {
-                input = new BufferedReader(new FileReader(argsChecker.getFilename()));
+                input = new BufferedReader(new FileReader((argsChecker.getFilename())));
             }
             //инициализация потоков
             LogReader logReader = ctx.getBean("logReader", LogReader.class);

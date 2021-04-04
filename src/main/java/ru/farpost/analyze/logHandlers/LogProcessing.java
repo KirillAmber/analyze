@@ -55,9 +55,10 @@ public class LogProcessing extends Thread {
         Когда tempData изменяется, то создаётся новый интервал
          */
         Date tempData = null;
+        String row = "";
         //берём данные из очереди
         while (isReading) {
-            String row = inputQueue.getInputQueue().take();
+            row = inputQueue.getInputQueue().take();
             datatimeMatcher = datatimePattern.matcher(row);
             if(datatimeMatcher.find()){
                 //переводим строку в Date
@@ -65,9 +66,16 @@ public class LogProcessing extends Thread {
                 if(tempData == null){
                     tempData = foundTime;
                     groupData.add(row);
+                    System.out.println("oops");
                 }
                 else if(tempData.equals(foundTime)){
-                    groupData.add(row);
+                    //выгружаем groupData, чтобы не получить OutOfMemory, когда интервал становится слишком
+                    //длинным
+                    if(groupData.size()>1000){
+                        addFailureInterval(groupAnalyzerAvailability.analyze(tempData, foundTime, groupData));
+                    } else {
+                        groupData.add(row);
+                    }
                 }
                 //здесь мы анализируем данные из groupData и выгружаем в outputQueue
                 else if(!tempData.equals(foundTime)){

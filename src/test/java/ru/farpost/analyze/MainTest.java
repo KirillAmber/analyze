@@ -22,17 +22,18 @@ public class MainTest {
 
     @Parameterized.Parameters
     public static List<String[][]> testParams(){
+        String filename = "bigAccessFile.log";
         return Arrays.asList(
                 //0 адекватный тест
-                new String[][]{new String[]{"-u", "99", "-t", "45", "-f", "access.log"}},
+                new String[][]{new String[]{"-u", "99", "-t", "45", "-f", filename}},
                 //1 неправильное имя файла
                 new String[][]{new String[]{"-u", "99", "-t", "45", "-f", "access.logss"}},
                 //2,3,4 перемешанные аргументы
-                new String[][]{new String[]{"-t", "45", "-u", "99",  "-f", "access.log"}},
+                new String[][]{new String[]{"-t", "45", "-u", "99",  "-f", filename}},
                 new String[][]{new String[]{"-f", "access.log", "-t", "45", "-u", "99"}},
-                new String[][]{new String[]{"-t", "45", "-u", "99",  "-f", "access.log"}},
+                new String[][]{new String[]{"-t", "45", "-u", "99",  "-f", filename}},
                 //5 неправильно заданны названия аргументов
-                new String[][]{new String[]{"t", "45", "u", "99",  "-f", "access.log"}},
+                new String[][]{new String[]{"t", "45", "u", "99",  "-f", filename}},
                 //6 пустые аргументы
                 new String[][]{new String[]{"-t", "", "-u", ""}},
                 //7 с одним аргументом
