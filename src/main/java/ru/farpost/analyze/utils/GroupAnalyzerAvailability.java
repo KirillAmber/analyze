@@ -4,7 +4,6 @@ package ru.farpost.analyze.utils;
 import org.springframework.stereotype.Service;
 import ru.farpost.analyze.models.Interval;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Queue;
 import java.util.regex.Matcher;

@@ -28,8 +28,8 @@ public class ArgsChecker {
         millisAcceptable = 0;
         filename = "";
     }
-    //проверка аргументов
-    public boolean check(String [] args) throws ArgumentException {
+    //проверка аргументов. Если аргументы неправильные, то выбрасывает соответствующие исключение
+    public void check(String [] args) throws ArgumentException {
         if (args.length == 0) { // ввод с помощью интерактивного ввода
             Scanner in = new Scanner(System.in);
             System.out.println("Enter the name of the file (The file must be in the same directory," +
@@ -49,7 +49,6 @@ public class ArgsChecker {
             checkMinPercAvailability(args);
             checkMillisAcceptable(args);
         }
-        return true;
     }
 
     private boolean checkMinPercAvailability(String [] args) throws WrongPercException {

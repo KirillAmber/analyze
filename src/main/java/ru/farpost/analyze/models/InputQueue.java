@@ -1,11 +1,8 @@
 package ru.farpost.analyze.models;
 
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.SynchronousQueue;
 
 //Это синглтон для чтения из файла логов. В него записываются логи и передаются в класс LogProcessing

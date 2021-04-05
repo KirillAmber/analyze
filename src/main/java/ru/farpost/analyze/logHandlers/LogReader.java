@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.farpost.analyze.models.InputQueue;
 
-import java.io.*;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 //Класс предназначен для считывание строк из файла и добавление строк в очередь
 @Component

@@ -66,7 +66,6 @@ public class LogProcessing extends Thread {
                 if(tempData == null){
                     tempData = foundTime;
                     groupData.add(row);
-                    System.out.println("oops");
                 }
                 else if(tempData.equals(foundTime)){
                     //выгружаем groupData, чтобы не получить OutOfMemory, когда интервал становится слишком
