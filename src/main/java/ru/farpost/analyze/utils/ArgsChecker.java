@@ -19,7 +19,7 @@ public class ArgsChecker {
     //Минимально допустимый уровень доступности
     private double minPercAvailability;
     //приемлемое время ответа
-    private double  millisAcceptable;
+    private double millisAcceptable;
     //
     private String filename;
 

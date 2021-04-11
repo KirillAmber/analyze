@@ -7,7 +7,9 @@ import ru.farpost.analyze.exceptions.argumentsExceptions.ArgumentException;
 import ru.farpost.analyze.logHandlers.LogLoader;
 import ru.farpost.analyze.logHandlers.LogProcessing;
 import ru.farpost.analyze.logHandlers.LogReader;
-import ru.farpost.analyze.viewControllers.IntervalsOutput;
+import ru.farpost.analyze.utils.RowsAnalyzerAvailability;
+import ru.farpost.analyze.utils.RowsSlicer;
+import ru.farpost.analyze.viewcontrollers.IntervalsOutput;
 
 import java.io.IOException;
 
@@ -20,16 +22,11 @@ public class Main {
 
         LogLoader logLoader = ctx.getBean(LogLoader.class);
         //инициализация потоков
-        LogReader logReader = ctx.getBean("logReader", LogReader.class);
-        logReader.setInput(logLoader.load(args));
+        LogReader logReader = ctx.getBean(LogReader.class, logLoader.load(args));
+        LogProcessing logProcessing = ctx.getBean(LogProcessing.class,
+                new RowsAnalyzerAvailability(logLoader.getArgsChecker().getMinPercAvailability(), logLoader.getArgsChecker().getMillisAcceptable()), new RowsSlicer());
 
-        LogProcessing logProcessing = ctx.getBean("logProcessing", LogProcessing.class);
-        logProcessing.getGroupAnalyzerAvailability().setMillisAcceptable(logLoader.getArgsChecker()
-                .getMillisAcceptable());
-        logProcessing.getGroupAnalyzerAvailability().setMinPercAvailability(logLoader.getArgsChecker()
-                .getMinPercAvailability());
-
-        IntervalsOutput intervalsOutput = ctx.getBean("intervalsOutput", IntervalsOutput.class);
+        IntervalsOutput intervalsOutput = ctx.getBean(IntervalsOutput.class);
         //запуск потоков
         logReader.start();
         logProcessing.start();
@@ -40,13 +37,13 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logProcessing.setReading(false);
+        logProcessing.interrupt();
         try {
             logProcessing.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        intervalsOutput.setProcessing(false);
+        intervalsOutput.interrupt();
 
     }
 }

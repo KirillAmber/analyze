@@ -6,20 +6,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import ru.farpost.analyze.utils.GroupAnalyzerAvailability;
+import ru.farpost.analyze.utils.RowsAnalyzerAvailability;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 @RunWith(Parameterized.class)
-public class GroupAnalyzerAvailabilityTest {
-    public GroupAnalyzerAvailability groupAnalyzerAvailability;
+public class RowsAnalyzerAvailabilityTest {
+    public RowsAnalyzerAvailability rowsAnalyzerAvailability;
     public int totalRequests;
     public int amountFailures;
 
-    public GroupAnalyzerAvailabilityTest(int totalRequests, int amountFailures){
-        groupAnalyzerAvailability = new GroupAnalyzerAvailability(45, 55);
+    public RowsAnalyzerAvailabilityTest(int totalRequests, int amountFailures){
+        rowsAnalyzerAvailability = new RowsAnalyzerAvailability(45, 55);
         this.totalRequests = totalRequests;
         this.amountFailures = amountFailures;
     }
@@ -55,9 +55,9 @@ public class GroupAnalyzerAvailabilityTest {
 
     @Test
     public void computeAvailability() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Class<? extends GroupAnalyzerAvailability> classLogAnalyzer = groupAnalyzerAvailability.getClass();
+        Class<? extends RowsAnalyzerAvailability> classLogAnalyzer = rowsAnalyzerAvailability.getClass();
         Method method = classLogAnalyzer.getDeclaredMethod("computeAvailability", int.class, int.class);
         method.setAccessible(true);
-        System.out.println(method.invoke(groupAnalyzerAvailability, totalRequests, amountFailures));
+        System.out.println(method.invoke(rowsAnalyzerAvailability, totalRequests, amountFailures));
     }
 }

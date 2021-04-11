@@ -3,6 +3,7 @@ package ru.farpost.analyze.models;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
 //Это синглтон для вывода очереди интервалов в терминал. Он принимает из класса LogProcessing обработанные
@@ -12,14 +13,14 @@ import java.util.concurrent.SynchronousQueue;
 public class OutputQueue {
 
 
-    private final SynchronousQueue<Interval> outputQueue;
+    private final BlockingQueue<ProcessedInterval> outputQueue;
 
     public OutputQueue() {
         outputQueue = new SynchronousQueue<>();
     }
 
 
-    public SynchronousQueue<Interval> getOutputQueue() {
+    public BlockingQueue<ProcessedInterval> getOutputQueue() {
         return outputQueue;
     }
 

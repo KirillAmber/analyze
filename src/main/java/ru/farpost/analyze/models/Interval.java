@@ -1,50 +1,33 @@
 package ru.farpost.analyze.models;
 
-
 import java.util.Date;
 
-//Модель для вывода интервалов времени с их долей доступности
-public class Interval implements Comparable<Interval> {
-    private Date dataS;
-    private Date dataF;
-    private double percAvailability;
+public class Interval implements Comparable<Interval>, Cloneable {
+    public static final Date DEFAULT_DATE = new Date(0);
+    private Date dateS;
+    private Date dateF;
 
-    public Interval(Date dataS, Date dataF) {
-        this.dataS = dataS;
-        this.dataF = dataF;
-        percAvailability = -1;
+    public Interval(Date dateS, Date dateF){
+        this.dateS = dateS;
+        this.dateF = dateF;
     }
 
-    public Date getDataS() {
-        return dataS;
+    Interval(){
+        dateS = DEFAULT_DATE;
+        dateF = DEFAULT_DATE;
     }
 
-    public void setDataS(Date dataS) {
-        this.dataS = dataS;
+    public Interval(Interval other) {
+        this.dateS = other.dateS;
+        this.dateF = other.dateF;
     }
 
-    public Date getDataF() {
-        return dataF;
-    }
-
-    public void setDataF(Date dataF) {
-        this.dataF = dataF;
-    }
-
-    public double getPercAvailability() {
-        return percAvailability;
-    }
-
-    public void setPercAvailability(double percAvailability) {
-        this.percAvailability = percAvailability;
-    }
 
     @Override
     public String toString() {
         return "Interval{" +
-                "dataS=" + dataS +
-                ", dataF=" + dataF +
-                ", percAvailability=" + percAvailability +
+                "dateS=" + dateS +
+                ", dateF=" + dateF +
                 '}';
     }
 
@@ -53,21 +36,37 @@ public class Interval implements Comparable<Interval> {
         if (this == o) return true;
         if (!(o instanceof Interval)) return false;
         Interval interval = (Interval) o;
-        return dataS.equals(interval.dataS) &&
-                dataF.equals(interval.dataF);
+        return dateS.equals(interval.dateS) &&
+                dateF.equals(interval.dateF);
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31*result + (dataS == null ? 0 : dataS.hashCode());
-        result = 31*result + (dataS == null ? 0 : dataF.hashCode());
+        result = 31*result + (dateS == null ? 0 : dateS.hashCode());
+        result = 31*result + (dateS == null ? 0 : dateF.hashCode());
         return result;
     }
 
+    public Date getDateS() {
+        return dateS;
+    }
+
+    public void setDateS(Date dateS) {
+        this.dateS = dateS;
+    }
+
+    public Date getDateF() {
+        return dateF;
+    }
+
+    public void setDateF(Date dateF) {
+        this.dateF = dateF;
+    }
 
     @Override
     public int compareTo(Interval o) {
-        return this.getDataS().compareTo(o.getDataS());
+        return this.getDateS().compareTo(o.getDateS());
     }
+
 }

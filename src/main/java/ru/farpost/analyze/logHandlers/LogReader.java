@@ -1,35 +1,39 @@
 package ru.farpost.analyze.logHandlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.farpost.analyze.models.InputQueue;
 
+import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 
 //Класс предназначен для считывание строк из файла и добавление строк в очередь
 @Component
+@Scope("prototype")
 public class LogReader extends Thread {
     private BufferedReader input;
     private InputQueue inputQueue;
 
+    @Autowired(required = false)
     public LogReader(BufferedReader input){
         this.input = input;
     }
 
-    public LogReader(){}
+    public LogReader (){}
 
     @Override
     public void run() {
         super.run();
         try {
-            read(input);
+            read();
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void read(BufferedReader input) throws InterruptedException, IOException {
+    private void read() throws InterruptedException, IOException {
         String stringLog = "";
         while (true) {
             if ((stringLog = input.readLine()) == null) break;

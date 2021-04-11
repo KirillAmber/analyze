@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
 
 @ComponentScan("ru.farpost.analyze")
 @Configuration

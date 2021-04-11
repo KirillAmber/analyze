@@ -8,7 +8,13 @@ import ru.farpost.analyze.exceptions.argumentsExceptions.NoEnoughArgsException;
 
 public class ArgsCheckerTest {
     final String filename = "access.log";
-    ArgsChecker argsChecker = new ArgsChecker();
+    ArgsChecker argsChecker;
+
+    public ArgsCheckerTest(){
+        argsChecker = new ArgsChecker();
+    }
+
+
     @Before
     public void setUp() throws Exception {
     }
