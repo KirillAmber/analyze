@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.farpost.analyze.models.InputQueue;
 
-import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 

@@ -12,7 +12,6 @@ import java.util.concurrent.SynchronousQueue;
 @Scope("singleton")
 public class OutputQueue {
 
-
     private final BlockingQueue<ProcessedInterval> outputQueue;
 
     public OutputQueue() {

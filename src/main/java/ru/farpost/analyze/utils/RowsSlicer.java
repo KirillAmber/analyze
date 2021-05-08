@@ -14,7 +14,7 @@ import static ru.farpost.analyze.models.Interval.DEFAULT_DATE;
 
 @Service
 public class RowsSlicer {
-    private RawInterval rawInterval;
+    private final RawInterval rawInterval;
 
     public RowsSlicer(){
         rawInterval = new RawInterval();

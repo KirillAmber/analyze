@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
 @Component
 @Scope("prototype")
 public class LogProcessing extends Thread {
-    private RowsAnalyzerAvailability rowsAnalyzerAvailability;
-    private RowsSlicer rowsSlicer;
+    private final RowsAnalyzerAvailability rowsAnalyzerAvailability;
+    private final RowsSlicer rowsSlicer;
     private SimpleDateFormat dataFormat;
     private InputQueue inputQueue;
     private OutputQueue outputQueue;
@@ -52,6 +52,7 @@ public class LogProcessing extends Thread {
                 //переводим строку в Date
                 Date foundTime;
                 synchronized (dataFormat) {
+
                     foundTime = dataFormat.parse(datatimeMatcher.group().trim());
                 }
                 if (rowsSlicer.isReadyForSlicing()){

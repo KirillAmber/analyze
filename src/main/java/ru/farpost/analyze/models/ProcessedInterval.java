@@ -1,11 +1,8 @@
 package ru.farpost.analyze.models;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-
 import java.util.Date;
+import java.util.Objects;
 
 //Модель для вывода интервалов времени с их долей доступности
 
@@ -15,6 +12,10 @@ public class ProcessedInterval extends Interval {
     public ProcessedInterval(Date dataS, Date dataF) {
         super(dataS, dataF);
         percAvailability = -1;
+    }
+    public ProcessedInterval(Date dataS, Date dataF, double percAvailability) {
+        super(dataS, dataF);
+        this.percAvailability = percAvailability;
     }
 
     public ProcessedInterval(ProcessedInterval other) {
@@ -41,10 +42,17 @@ public class ProcessedInterval extends Interval {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        long doubleFieldBits = Double.doubleToLongBits(percAvailability);
-        result = 31 * result + (int)(doubleFieldBits ^ (doubleFieldBits >>> 32));
-        return result;
+        return Objects.hash(super.hashCode(), percAvailability);
     }
 
+    @Override
+    public int compareTo(Interval o) {
+        int result = super.compareTo(o);
+        if(result == 0){
+            if(o instanceof ProcessedInterval) {
+                return Double.compare(this.percAvailability, ((ProcessedInterval) o).percAvailability);
+            }
+        }
+        return result;
+    }
 }

@@ -9,6 +9,7 @@ import java.util.*;
 //Необработанный интервал имеют исходную строку из лога
 public class RawInterval extends Interval {
     private Queue<String> rowsQueue;
+    
 
     public RawInterval(Date dateS, Date dateF, Queue<String> rowsQueue) {
         super(dateS, dateF);

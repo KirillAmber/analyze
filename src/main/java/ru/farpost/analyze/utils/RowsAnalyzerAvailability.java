@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.farpost.analyze.models.ProcessedInterval;
 import ru.farpost.analyze.models.RawInterval;
 
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Queue;
