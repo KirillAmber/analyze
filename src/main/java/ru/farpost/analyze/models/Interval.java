@@ -6,20 +6,23 @@ public class Interval implements Comparable<Interval>, Cloneable {
     public static final Date DEFAULT_DATE = new Date(0);
     private Date dateS;
     private Date dateF;
-
+    /*
+        так как Date - небезопасный, устаревший класс и лучше всего здесь было бы
+        использовать LocalTime, но можно обойтись и защищёнными копиями.
+     */
     public Interval(Date dateS, Date dateF){
-        this.dateS = dateS;
-        this.dateF = dateF;
+        this.dateS = new Date(dateS.getTime());
+        this.dateF = new Date(dateF.getTime());
     }
 
     Interval(){
-        dateS = DEFAULT_DATE;
-        dateF = DEFAULT_DATE;
+        dateS = new Date(DEFAULT_DATE.getTime());
+        dateF = new Date(DEFAULT_DATE.getTime());
     }
 
     public Interval(Interval other) {
-        this.dateS = other.dateS;
-        this.dateF = other.dateF;
+        this.dateS = new Date(other.dateS.getTime());
+        this.dateF = new Date(other.dateF.getTime());
     }
 
 
