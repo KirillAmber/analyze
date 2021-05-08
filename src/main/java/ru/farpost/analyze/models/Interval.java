@@ -52,19 +52,18 @@ public class Interval implements Comparable<Interval>, Cloneable {
     }
 
     public Date getDateS() {
-        return dateS;
+        return new Date(dateS.getTime());
     }
-
-    public void setDateS(Date dateS) {
-        this.dateS = dateS;
-    }
-
     public Date getDateF() {
-        return dateF;
+        return new Date(dateF.getTime());
+    }
+    public void setDateS(Date dateS) {
+        this.dateS = new Date(dateS.getTime());
+
     }
 
     public void setDateF(Date dateF) {
-        this.dateF = dateF;
+        this.dateF = new Date(dateF.getTime());
     }
 
     @Override
