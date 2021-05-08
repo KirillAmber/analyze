@@ -15,7 +15,7 @@ public class Interval implements Comparable<Interval>, Cloneable {
         this.dateF = new Date(dateF.getTime());
     }
 
-    Interval(){
+    public Interval(){
         dateS = new Date(DEFAULT_DATE.getTime());
         dateF = new Date(DEFAULT_DATE.getTime());
     }
