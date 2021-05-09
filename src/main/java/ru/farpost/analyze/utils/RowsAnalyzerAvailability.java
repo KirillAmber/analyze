@@ -5,36 +5,65 @@ import org.springframework.stereotype.Service;
 import ru.farpost.analyze.models.ProcessedInterval;
 import ru.farpost.analyze.models.RawInterval;
 
-import java.lang.reflect.Array;
 import java.util.ArrayDeque;
-import java.util.Date;
 import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-//Этот класс проверяет интервал на наличие ошибок и на долю доступности
+
+/**
+ * Этот класс проверяет интервал на наличие ошибок и на долю доступности.
+ */
 @Service
 public class RowsAnalyzerAvailability {
+    /**
+     * Код ошибки сервера 500.
+     */
     public static final String ERROR_SERVER_0 = "500";
+    /**
+     * код ошибки серева 599.
+     */
     public static final String ERROR_SERVER_99 = "599";
-    //паттерн для выявления кода ответа сервера
+    /**
+     * Pattern для выявления кода ответа сервера.
+     */
     public static final Pattern CODE_PATTERN = Pattern.compile("(?<=\\s)\\d{3}(?=\\s)");
-    //паттерн для выявления длительности запроса
+    /**
+     * Pattern для выявления длительности запроса.
+     */
     public static final Pattern TIME_RESPONSE_PATTERN = Pattern.compile("(?<=\\s)(\\d+[.]\\d+)(?=\\s)");
+    /**
+     * Минимальный допустимый уровень доступности в процентах.
+     */
     private double minPercAvailability;
+    /**
+     * Приемлемое время ответа в миллисекундах.
+     */
     private double millisAcceptable;
 
+    /**
+     * Конструктор по умолчанию; присваивает millisAcceptable и minPercAvailability -1
+     */
     public RowsAnalyzerAvailability(){
         millisAcceptable = -1;
         minPercAvailability = -1;
     }
 
+    /**
+     *
+     * @param minPercAvailability Минимальный допустимый уровень доступности в процентах
+     * @param millisAcceptable Приемлемое время ответа в миллисекундах
+     */
     public RowsAnalyzerAvailability(double minPercAvailability,
                                     double millisAcceptable){
         this.minPercAvailability = minPercAvailability;
         this.millisAcceptable = millisAcceptable;
     }
 
-    //проверяет долю доступности в этом интервале и возвращает объект Interval с выявленной долей
+    /**
+     * Проверяет долю доступности в этом интервале.
+     * @param rawInterval необработанный интервал
+     * @return возвращает объект ProcessedInterval с выявленной долей доступности
+     */
     public ProcessedInterval analyze(RawInterval rawInterval){
         ProcessedInterval failureProcessedInterval = new ProcessedInterval(rawInterval.getDateS(), rawInterval.getDateF());
         Queue<String> rowsQueue = new ArrayDeque<>(rawInterval.getRowsQueue());
@@ -71,23 +100,41 @@ public class RowsAnalyzerAvailability {
         return failureProcessedInterval;
     }
 
-    //вычисление процентного соотношения
+    /**
+     * Вычисление процентного соотношения.
+     * @param totalRequests общее количество запросов
+     * @param amountFailures количество провалов
+     * @return возвращает процент доступности
+     */
     private double computeAvailability(int totalRequests, int amountFailures){
         return 100.0 - ((double)amountFailures/totalRequests * 100);
     }
 
+    /**
+     * @return возвращает Минимальный допустимый уровень доступности в процентах
+     */
     public double getMinPercAvailability() {
         return minPercAvailability;
     }
 
+    /**
+     * @return возвращает приемлемое время ответа в миллисекундах
+     */
     public double getMillisAcceptable() {
         return millisAcceptable;
     }
 
+    /**
+     * @param minPercAvailability Минимальный допустимый уровень доступности в процентах
+     */
     public void setMinPercAvailability(double minPercAvailability) {
         this.minPercAvailability = minPercAvailability;
     }
 
+    /**
+     *
+     * @param millisAcceptable приемлемое время ответа в миллисекундах
+     */
     public void setMillisAcceptable(double millisAcceptable) {
         this.millisAcceptable = millisAcceptable;
     }

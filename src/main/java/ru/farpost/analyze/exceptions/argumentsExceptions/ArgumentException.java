@@ -1,5 +1,8 @@
 package ru.farpost.analyze.exceptions.argumentsExceptions;
-//Родитель всех исключений, связанных с аргументами
+
+/**
+ * Сигнализирует, что аргументы в коммандной строке некорректны
+ */
 public class ArgumentException extends Exception {
     private static final String MESSAGE = "Wrong arguments";
     public ArgumentException() {

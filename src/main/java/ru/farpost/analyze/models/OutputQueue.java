@@ -6,14 +6,21 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
-//Это синглтон для вывода очереди интервалов в терминал. Он принимает из класса LogProcessing обработанные
-//логи и помещает их в виде объектов Interval в очередь данного синглтона.
+/**
+ * Это синглтон для вывода очереди интервалов в терминал; он принимает из класса LogProcessing обработанные
+ * логи и помещает их в виде объектов Interval в очередь данного синглтона.
+ */
 @Service
 @Scope("singleton")
 public class OutputQueue {
-
+    /**
+     * Блокирующая очередь.
+     */
     private final BlockingQueue<ProcessedInterval> outputQueue;
 
+    /**
+     * Конструктор по умолчанию; присваивает SynchronousQueue
+     */
     public OutputQueue() {
         outputQueue = new SynchronousQueue<>();
     }

@@ -6,8 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.text.SimpleDateFormat;
-import java.util.regex.Pattern;
 
+/**
+ * Конфигурация бинов.
+ */
 @ComponentScan("ru.farpost.analyze")
 @Configuration
 public class ContextConfig {

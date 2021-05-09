@@ -1,38 +1,61 @@
 package ru.farpost.analyze.utils;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
-import ru.farpost.analyze.models.Interval;
+import ru.farpost.analyze.exceptions.argumentsExceptions.InvalidIntervalFinishDateException;
 import ru.farpost.analyze.models.RawInterval;
-
-import java.util.ArrayDeque;
 import java.util.Date;
-import java.util.Queue;
-
 import static ru.farpost.analyze.models.Interval.DEFAULT_DATE;
 
+/**
+ * Класс, предназначенный для раздивение логов на интервалы.
+ */
 @Service
 public class RowsSlicer {
+    /**
+     * Необработанный интервал.
+     */
     private final RawInterval rawInterval;
 
+    /**
+     * {@literal Конструктор по умолчанию.} Присваивает объект RawInterval.
+     */
     public RowsSlicer(){
         rawInterval = new RawInterval();
     }
 
-    public void addDate(Date date){
+    /**
+     * Присваивает даты к переменным DateS и DateF экземпляра класса RawInterval;
+     *  интервал сформируется только тогда, когда добавится дата, отличная
+     * от первой добавленной даты, иначе повторяющиеся даты будут добавляться в очередь
+     * @param date Дата, которую нужно добавить в интервал
+     * @throws InvalidIntervalFinishDateException если параметр для даты конца интервала меньше, чем даты началы, то
+     * выбрасывается исключение
+     */
+    public void addDate(Date date) throws InvalidIntervalFinishDateException{
         if (rawInterval.getDateS().equals(DEFAULT_DATE)){
             rawInterval.setDateS(date);
-        }
-        if(rawInterval.getDateS() != date){
+        } else if(rawInterval.getDateS() != date){
             rawInterval.setDateF(date);
+        } else if(rawInterval.getDateS().compareTo(date)>0){
+            throw new InvalidIntervalFinishDateException("parameter for dateF: " + date + "\n" +
+                    "is lower than dateS of rawInterval:" + rawInterval.getDateF() + "\n" +
+                    "parameter for dateF must be greater than dateS");
         }
+
     }
+
+    /**
+     * Добавляет строку лога в очередь.
+     * @param row строка лога
+     */
     public void addRow(String row){
         rawInterval.getRowsQueue().add(row);
     }
 
-    //вырезает текущую очередь (интервал) и возвращает её
+    /**
+     * @return возвращает сформированный необработанный интервал
+     */
     public RawInterval slice(){
         RawInterval slicedInterval = new RawInterval(rawInterval);
         rawInterval.getRowsQueue().clear();
@@ -41,10 +64,18 @@ public class RowsSlicer {
         return slicedInterval;
     }
 
+    /**
+     * @return возвращает true, если интервал сформирован и false, если ещё нет
+     */
     public boolean isReadyForSlicing(){
         return rawInterval.getDateS().compareTo(rawInterval.getDateF()) < 0;
     }
 
+    /**
+     * Осторожно, может вернуть несформированный интервал(даты будут по умолчанию) и лучше всего
+     * использовать в комбинации с методом {@code isReadyForSlicing}.
+     * @return возвращает необработанный интервал
+     */
     public RawInterval getRawInterval() {
         return rawInterval;
     }

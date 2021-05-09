@@ -1,0 +1,8 @@
+
+ru.farpost.analyze
+ru.farpost.analyze.config
+ru.farpost.analyze.exceptions.argumentsExceptions
+ru.farpost.analyze.logHandlers
+ru.farpost.analyze.models
+ru.farpost.analyze.utils
+ru.farpost.analyze.viewcontrollers
