@@ -22,7 +22,7 @@ public class MainTest {
     @Test
     public void main_ShouldPrintFailureIntervalsInOrder_WhenAllArgumentsAreCorrectly() throws IOException, ArgumentException{
         String filename = "access.log";
-        String[] args = {"-u", "99", "-t", "45", "-f", filename};
+        String[] args = {"-", "99", "-t", "45", "-f", filename};
         Main.main(args);
     }
 

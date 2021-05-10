@@ -2,7 +2,7 @@ package ru.farpost.analyze.utils;
 
 
 import org.springframework.stereotype.Service;
-import ru.farpost.analyze.exceptions.argumentsExceptions.InvalidIntervalFinishDateException;
+import ru.farpost.analyze.exceptions.InvalidIntervalFinishDateException;
 import ru.farpost.analyze.models.RawInterval;
 import java.util.Date;
 import static ru.farpost.analyze.models.Interval.DEFAULT_DATE;
@@ -38,9 +38,7 @@ public class RowsSlicer {
         } else if(rawInterval.getDateS() != date){
             rawInterval.setDateF(date);
         } else if(rawInterval.getDateS().compareTo(date)>0){
-            throw new InvalidIntervalFinishDateException("parameter for dateF: " + date + "\n" +
-                    "is lower than dateS of rawInterval:" + rawInterval.getDateF() + "\n" +
-                    "parameter for dateF must be greater than dateS");
+            throw new InvalidIntervalFinishDateException(date, rawInterval.getDateS());
         }
 
     }

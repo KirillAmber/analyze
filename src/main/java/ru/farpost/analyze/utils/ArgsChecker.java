@@ -74,7 +74,7 @@ public class ArgsChecker {
             checkMillisAcceptable(args);
             checkFilename(args);
         } else if (args.length != 4) {
-            throw new NoEnoughArgsException();
+            throw new NoEnoughArgsException(args);
         } else {
             checkMinPercAvailability(args);
             checkMillisAcceptable(args);
@@ -89,7 +89,7 @@ public class ArgsChecker {
             } else if (args[4].equals("-u")){
                 minPercAvailability = Double.parseDouble(args[5]);
             } else {
-                throw new WrongPercException();
+                throw new WrongPercException(args);
             }
         return true;
     }
@@ -101,7 +101,7 @@ public class ArgsChecker {
         } else if (args[4].equals("-t")) {
             millisAcceptable = Double.parseDouble(args[5]);
         } else {
-            throw new WrongMillisException();
+            throw new WrongMillisException(args);
         }
         return true;
     }
@@ -113,7 +113,7 @@ public class ArgsChecker {
             } else if (args[4].equals("-f")){
                 filename = args[5];
             } else {
-                throw new WrongFileException();
+                throw new WrongFileException(args);
             }
         return true;
     }

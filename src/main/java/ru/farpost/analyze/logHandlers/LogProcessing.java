@@ -3,7 +3,7 @@ package ru.farpost.analyze.logHandlers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import ru.farpost.analyze.exceptions.argumentsExceptions.InvalidIntervalFinishDateException;
+import ru.farpost.analyze.exceptions.InvalidIntervalFinishDateException;
 import ru.farpost.analyze.utils.RowsAnalyzerAvailability;
 import ru.farpost.analyze.models.ProcessedInterval;
 import ru.farpost.analyze.models.InputQueue;
@@ -62,6 +62,7 @@ public class LogProcessing extends Thread {
         try {
             process();
         } catch (ParseException | InterruptedException | InvalidIntervalFinishDateException e) {
+            e.printStackTrace();
         }
     }
 

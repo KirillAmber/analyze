@@ -6,6 +6,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.util.AssertionErrors;
+import ru.farpost.analyze.exceptions.InvalidIntervalFinishDateException;
+
 import static org.hamcrest.Matchers.*;
 
 import java.util.Arrays;
@@ -33,7 +35,7 @@ public class RowsSlicerTest {
     }
 
     @Test
-    public void addDate_ShouldCompleteSuccessfully_WhenAnArrayOfIdenticalDatesIsSupplied() {
+    public void addDate_ShouldCompleteSuccessfully_WhenAnArrayOfIdenticalDatesIsSupplied() throws InvalidIntervalFinishDateException {
         Arrays.fill(testDateArray, TEST_DATE);
         for (Date date : testDateArray) {
             rowsSlicer.addDate(date);
