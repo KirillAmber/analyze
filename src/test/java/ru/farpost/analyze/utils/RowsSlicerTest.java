@@ -2,61 +2,61 @@ package ru.farpost.analyze.utils;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.util.AssertionErrors;
 import ru.farpost.analyze.exceptions.InvalidIntervalFinishDateException;
+import ru.farpost.analyze.models.RawInterval;
 
-import static org.hamcrest.Matchers.*;
-
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static ru.farpost.analyze.models.Interval.DEFAULT_DATE;
 
 public class RowsSlicerTest {
     RowsSlicer rowsSlicer;
-    static final Date TEST_DATE = new Date(10);
-    static final int SIZE_DATE_ARRAY = 5;
-    Date[] testDateArray;
+    static final Date TEST_DATE = new Date(1000);
+    static final int CAPACITY_DATE_QUEUE = 5;
+    Queue<Date> testQueue;
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         rowsSlicer = new RowsSlicer();
-        testDateArray = new Date[SIZE_DATE_ARRAY];
+        testQueue = new ArrayDeque<>(CAPACITY_DATE_QUEUE);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown(){
 
     }
 
     @Test
-    public void addDate_ShouldCompleteSuccessfully_WhenAnArrayOfIdenticalDatesIsSupplied() throws InvalidIntervalFinishDateException {
-        Arrays.fill(testDateArray, TEST_DATE);
-        for (Date date : testDateArray) {
+    public void addDate_RowsSlicerShouldNotBeReadyForSlicing_WhenAnArrayOfIdenticalDatesIsSupplied() throws InvalidIntervalFinishDateException {
+        for(int i = 0; i < CAPACITY_DATE_QUEUE; i++){
+            testQueue.add(TEST_DATE);
+        }
+        for (Date date : testQueue) {
             rowsSlicer.addDate(date);
         }
         Date dateS = rowsSlicer.getRawInterval().getDateS();
         Date dateF = rowsSlicer.getRawInterval().getDateF();
         //должна заполниться только dateS
-        assertEquals(dateS, TEST_DATE);
-        assertEquals(dateF, DEFAULT_DATE);
+        assertEquals(TEST_DATE, dateS);
+        assertEquals(DEFAULT_DATE, dateF);
         assertFalse(rowsSlicer.isReadyForSlicing());
     }
-    //TODO надо доделать тест
     @Test
-    public void addDate_ShouldCompleteSuccessfully_WhenArrayWithVariousDataSortedInAscendingOrder(){
-        for(int i = 1; i<=testDateArray.length; i++){
-            testDateArray[i] = new Date(i);
+    public void slice_ShouldSliceDatesIntoTwoIntervals_WhenArrayWithVariousDataSortedInAscendingOrder() throws InvalidIntervalFinishDateException {
+        Queue<RawInterval> outputQueue = new ArrayDeque<>();
+        for(int i = 0; i < CAPACITY_DATE_QUEUE; i++){
+            testQueue.add(new Date(i));
         }
-
+        for(Date date : testQueue){
+            rowsSlicer.addDate(date);
+            if(rowsSlicer.isReadyForSlicing()){
+                outputQueue.add(rowsSlicer.slice());
+            }
+        }
+        assertEquals(2,outputQueue.size());
     }
 
-    @Test
-    public void slice() {
-    }
 }

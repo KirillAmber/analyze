@@ -62,7 +62,13 @@ public class LogProcessing extends Thread {
         try {
             process();
         } catch (ParseException | InterruptedException | InvalidIntervalFinishDateException e) {
-            e.printStackTrace();
+            if(!rowsSlicer.getRawInterval().getRowsQueue().isEmpty()){
+                try {
+                    addFailureInterval(rowsAnalyzerAvailability.analyze(rowsSlicer.getRawInterval()));
+                } catch (InterruptedException interruptedException) {
+
+                }
+            }
         }
     }
 

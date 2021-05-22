@@ -35,12 +35,11 @@ public class RowsSlicer {
     public void addDate(Date date) throws InvalidIntervalFinishDateException{
         if (rawInterval.getDateS().equals(DEFAULT_DATE)){
             rawInterval.setDateS(date);
-        } else if(rawInterval.getDateS() != date){
+        } else if(!rawInterval.getDateS().equals(date)){
             rawInterval.setDateF(date);
         } else if(rawInterval.getDateS().compareTo(date)>0){
             throw new InvalidIntervalFinishDateException(date, rawInterval.getDateS());
         }
-
     }
 
     /**
