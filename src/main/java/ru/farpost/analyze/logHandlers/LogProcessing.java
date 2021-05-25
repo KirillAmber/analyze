@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.farpost.analyze.exceptions.InvalidIntervalFinishDateException;
+import ru.farpost.analyze.models.RawInterval;
 import ru.farpost.analyze.utils.RowsAnalyzerAvailability;
 import ru.farpost.analyze.models.ProcessedInterval;
 import ru.farpost.analyze.models.InputQueue;
@@ -64,7 +65,9 @@ public class LogProcessing extends Thread {
         } catch (ParseException | InterruptedException | InvalidIntervalFinishDateException e) {
             if(!rowsSlicer.getRawInterval().getRowsQueue().isEmpty()){
                 try {
-                    addFailureInterval(rowsAnalyzerAvailability.analyze(rowsSlicer.getRawInterval()));
+                    RawInterval lastRawInterval = rowsSlicer.getRawInterval();
+                    lastRawInterval.setDateF(lastRawInterval.getDateS());
+                    addFailureInterval(rowsAnalyzerAvailability.analyze(lastRawInterval));
                 } catch (InterruptedException interruptedException) {
 
                 }
